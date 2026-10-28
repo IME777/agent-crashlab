@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111c2b">
+  <title>Agent CrashLab — Reliability, observed</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Agent CrashLab home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>Agent <strong>CrashLab</strong><span class="brand-separator">/</span><small>reliability, observed</small></span></a>
+    <div class="header-meta"><span class="environment"><span class="status-dot"></span> LOCAL LAB</span><span class="build-label">MVP · 01</span></div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div><p class="eyebrow"><span></span> CODING AGENT RELIABILITY</p><h1>A controlled fault.<br><em>An observable recovery.</em></h1><p class="intro-copy">Run a repair task, interrupt the worker, and inspect what survives.<br class="desktop-break"> Every verdict comes with a patch, test results, and an execution trail.</p></div>
+      <div class="intro-aside"><span class="small-label">THE EXPERIMENT</span><p>Same task.<br>Different recovery policy.<br><strong>Evidence you can inspect.</strong></p><span class="aside-rule"></span></div>
+    </section>
+
+    <div id="error-banner" class="error-banner" role="alert" hidden><span id="error-message"></span><button id="dismiss-error" type="button" aria-label="Dismiss error">×</button></div>
+
+    <div class="lab-layout">
+      <aside class="sidebar">
+        <section class="panel experiment-panel" aria-labelledby="experiment-title">
+          <div class="panel-heading"><h2 id="experiment-title">Set up an experiment</h2><span class="section-number">01</span></div>
+          <form id="run-form">
+            <label for="task">Repair task</label><select id="task" name="task_id" required><option value="">Loading tasks…</option></select><details class="task-description-details"><summary>Task details</summary><p id="task-description" class="field-note">A small codebase with independent acceptance tests.</p></details>
+
+            <label for="provider">Execution mode</label><select id="provider" name="provider"><option value="fixture">Offline fixture</option><option value="nebius" disabled>Nebius · NVIDIA model</option></select>
+            <div id="mode-note" class="mode-note"><span class="mode-icon" aria-hidden="true">○</span><span id="mode-note-text">Offline fixture — no model API calls.</span></div>
+            <p id="live-readiness" class="field-note readiness">Checking live-model readiness…</p>
+
+            <label for="policy">Recovery policy</label><select id="policy" name="policy"><option value="resume">Resume from checkpoint</option><option value="restart">Restart from the beginning</option></select>
+
+            <label for="fault">Fault injection</label><select id="fault" name="fault"><option value="worker_crash_after_patch">Worker crash after patch</option><option value="model_429_once">Model request · one injected 429</option><option value="none">None · control run</option></select>
+            <p class="field-note">Injected faults are recorded in the execution trail.</p>
+
+            <button id="run-button" class="button primary" type="submit" disabled><span>Run experiment</span><span aria-hidden="true">↗</span></button>
+          </form>
+          <div class="experiment-footnote"><span aria-hidden="true">⌁</span> One task. One worker. Inspectable evidence.</div>
+        </section>
+
+        <section class="panel history-panel" aria-labelledby="history-title"><div class="panel-heading"><h2 id="history-title">Recent experiments</h2><button class="text-button" id="refresh-runs" type="button" aria-label="Refresh experiments">↻</button></div><div id="run-history" class="run-history"><p class="empty-history">No experiments yet.</p></div></section>
+      </aside>
+
+      <section class="workspace" aria-label="Experiment results">
+        <div class="panel run-overview">
+          <div class="run-title-row"><div><p class="small-label">EXPERIMENT RECORD</p><h2 id="run-title">Your next experiment starts here</h2><p id="run-subtitle" class="run-subtitle">Choose a task and run it to collect execution evidence.</p></div><span id="run-status" class="badge status-idle">READY</span></div>
+          <div class="run-actions"><span id="run-mode" class="mode-badge">OFFLINE FIXTURE · NO API CALLS</span><div class="action-group"><button id="crash-button" class="button danger small" type="button" disabled>Stop worker</button><button id="resume-button" class="button secondary small" type="button" disabled>Resume run <span aria-hidden="true">↗</span></button><a id="download-report" class="button secondary small disabled" aria-disabled="true">Report ↓</a></div></div>
+        </div>
+
+        <div class="metrics-grid" aria-label="Run measurements">
+          <div class="metric-card"><span class="small-label">ACCEPTANCE TESTS</span><strong id="metric-verdict">—</strong><span id="metric-verdict-note" class="metric-caption">Waiting for execution</span></div>
+          <div class="metric-card"><span id="metric-calls-label" class="small-label">MODEL CALLS</span><strong id="metric-calls">—</strong><span id="metric-calls-note" class="metric-caption">No calls recorded</span></div>
+          <div class="metric-card"><span class="small-label">RECORDED TOKENS</span><strong id="metric-tokens">—</strong><span id="metric-tokens-note" class="metric-caption">Input + output</span></div>
+          <div class="metric-card"><span class="small-label">WORKER ACTIVE TIME</span><strong id="metric-time">—</strong><span id="metric-time-note" class="metric-caption">Accumulated execution · excludes idle wait</span></div>
+        </div>
+
+        <section class="panel timeline-panel" aria-labelledby="timeline-title"><div class="panel-heading"><div class="heading-inline"><h2 id="timeline-title">Execution trail</h2><span id="event-count" class="count-pill">0 events</span></div><span id="current-phase" class="small-label">AWAITING RUN</span></div><div id="timeline" class="timeline" aria-live="polite"><div class="empty-state"><div class="empty-symbol" aria-hidden="true">↳</div><h3>Nothing to reconstruct. Yet.</h3><p>Model calls, injected faults, checkpoints, and test outcomes<br class="desktop-break"> will appear here as the worker executes.</p></div></div></section>
+
+        <div class="evidence-grid">
+          <section class="panel code-panel" aria-labelledby="patch-title"><div class="panel-heading"><h2 id="patch-title">Patch evidence</h2><div class="tabs" role="tablist" aria-label="Patch view"><button id="diff-tab" class="tab active" role="tab" aria-selected="true" aria-controls="patch-content" type="button" data-view="diff">Diff</button><button id="source-tab" class="tab" role="tab" aria-selected="false" aria-controls="patch-content" type="button" data-view="source">Source</button></div></div><pre id="patch-content" class="code-content" role="tabpanel" tabindex="0"><code id="patch-code" class="empty-code">A generated patch will appear after the model step.</code></pre></section>
+          <section class="panel tests-panel" aria-labelledby="tests-title"><div class="panel-heading"><h2 id="tests-title">Independent tests</h2><span id="tests-badge" class="test-badge">NOT RUN</span></div><div class="test-meta"><span id="test-environment">Environment: —</span><span id="test-duration">—</span></div><pre id="test-output" class="test-output" tabindex="0">No acceptance tests have run.</pre><div class="test-footnote">Acceptance tests are maintained outside the agent’s editable source.</div></section>
+        </div>
+        <p class="evidence-note"><span aria-hidden="true">◈</span> A passing run proves this task under these conditions. Offline fixtures do not count as live NVIDIA model usage.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer><span>Agent CrashLab</span><span>Build the case. Keep the evidence.</span><span>LOCAL FIRST / SINGLE-RUN LAB</span></footer>
+</body>
+</html>

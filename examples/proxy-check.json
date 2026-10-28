@@ -1,0 +1,10 @@
+{
+  "mode": "proxy_configuration_only",
+  "passed": true,
+  "returncode": 0,
+  "image": "caddy:2",
+  "notes": [
+    "Test-only password hash; no private environment file was read.",
+    "No public port was bound and no remote VM or TLS certificate was provisioned."
+  ]
+}

@@ -1,0 +1,27 @@
+[Unit]
+Description=Agent CrashLab judge demo
+After=network-online.target docker.service
+Wants=network-online.target
+Requires=docker.service
+
+[Service]
+Type=simple
+User=crashlab
+Group=crashlab
+SupplementaryGroups=docker
+WorkingDirectory=/opt/agent-crashlab
+EnvironmentFile=/etc/agent-crashlab/runtime.env
+ExecStart=/usr/bin/python3 -m crashlab --data /var/lib/agent-crashlab/runs serve --port 8765 --public-origin ${CRASHLAB_PUBLIC_ORIGIN} --max-live-runs ${CRASHLAB_MAX_LIVE_RUNS}
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=20
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/agent-crashlab
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

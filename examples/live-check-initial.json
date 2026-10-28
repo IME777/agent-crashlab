@@ -1,0 +1,549 @@
+{
+  "schema_version": "1",
+  "created_at": "2026-10-28T03:20:39.369+00:00",
+  "mode": "live_nebius_verification",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "task_id": "page-slices",
+  "complete": true,
+  "passed": false,
+  "cases": [
+    {
+      "name": "no_fault_repair",
+      "report": {
+        "id": "85dd5fd758024be2",
+        "task_id": "page-slices",
+        "provider": "nebius",
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "policy": "resume",
+        "fault": "none",
+        "status": "passed",
+        "phase": "done",
+        "created_at": "2026-10-28T03:20:39.402+00:00",
+        "updated_at": "2026-10-28T03:20:44.483+00:00",
+        "checkpoint": {
+          "source": "def page_slices(total_items, page_size):\n    if total_items < 0:\n        raise ValueError(\"total_items must be non-negative\")\n    if page_size <= 0:\n        raise ValueError(\"page_size must be positive\")\n    if total_items == 0:\n        return []\n    num_pages = (total_items + page_size - 1) // page_size\n    return [(i * page_size, min((i + 1) * page_size, total_items)) for i in range(num_pages)]",
+          "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,3 +1,9 @@\n def page_slices(total_items, page_size):\n-    return [(start, start + page_size)\n-            for start in range(0, total_items + 1, page_size)]\n+    if total_items < 0:\n+        raise ValueError(\"total_items must be non-negative\")\n+    if page_size <= 0:\n+        raise ValueError(\"page_size must be positive\")\n+    if total_items == 0:\n+        return []\n+    num_pages = (total_items + page_size - 1) // page_size\n+    return [(i * page_size, min((i + 1) * page_size, total_items)) for i in range(num_pages)]",
+          "round": 2,
+          "source_sha256": "d73739b14c5e0866a8164bfecfa3fd3d061f4deabe46af2d5ab4ac4a0f351c17",
+          "response_model": "nvidia/nemotron-3-super-120b-a12b",
+          "tests": {
+            "passed": true,
+            "returncode": 0,
+            "stdout": "test_exact_coverage (test_acceptance.PaginationAcceptance.test_exact_coverage) ... ok\ntest_invalid_bounds (test_acceptance.PaginationAcceptance.test_invalid_bounds) ... ok\ntest_partial_and_large_page (test_acceptance.PaginationAcceptance.test_partial_and_large_page) ... ok\ntest_zero_and_exact_multiple (test_acceptance.PaginationAcceptance.test_zero_and_exact_multiple) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nOK\n",
+            "duration_ms": 514,
+            "mode": "docker"
+          }
+        },
+        "fault_triggered": false,
+        "request_pending": false,
+        "metrics": {
+          "model_calls": 2,
+          "fixture_calls": 0,
+          "input_tokens": 1177,
+          "output_tokens": 535,
+          "elapsed_ms": 5075,
+          "restarts": 0,
+          "retries": 0,
+          "unknown_usage_requests": 0
+        },
+        "eligibility": {
+          "live_nvidia_model": true,
+          "mode_label": "Nebius live NVIDIA model response received"
+        },
+        "notes": [
+          "Results apply only to this task and fault profile; not a production reliability guarantee."
+        ],
+        "versions": {
+          "crashlab": "0.1.0",
+          "runtime_sha256": "9ad74e14f1e6202f2f9c9b9c3d7c1e8caf9367da4427c0bf8d21955302c57f25",
+          "task_sha256": "3a876aabe6a1d1216acf693289b3bc89e4f76b6ae6b7809c4bb2a5525bf30949"
+        },
+        "events": [
+          {
+            "id": 1,
+            "at": "2026-10-28T03:20:39.403+00:00",
+            "kind": "created",
+            "message": "Run created",
+            "detail": {
+              "provider": "nebius",
+              "policy": "resume"
+            }
+          },
+          {
+            "id": 2,
+            "at": "2026-10-28T03:20:39.405+00:00",
+            "kind": "started",
+            "message": "Run started from the beginning",
+            "detail": {}
+          },
+          {
+            "id": 3,
+            "at": "2026-10-28T03:20:39.484+00:00",
+            "kind": "prepared",
+            "message": "Task workspace prepared",
+            "detail": {}
+          },
+          {
+            "id": 4,
+            "at": "2026-10-28T03:20:39.486+00:00",
+            "kind": "model_request",
+            "message": "Requesting patch from Nebius",
+            "detail": {
+              "attempt": 1,
+              "model": "nvidia/nemotron-3-super-120b-a12b"
+            }
+          },
+          {
+            "id": 5,
+            "at": "2026-10-28T03:20:41.139+00:00",
+            "kind": "patch_checkpoint",
+            "message": "Patch and reported token usage committed atomically",
+            "detail": {
+              "round": 1,
+              "live": true
+            }
+          },
+          {
+            "id": 6,
+            "at": "2026-10-28T03:20:41.143+00:00",
+            "kind": "testing",
+            "message": "Running independent acceptance tests",
+            "detail": {
+              "mode": "docker"
+            }
+          },
+          {
+            "id": 7,
+            "at": "2026-10-28T03:20:41.145+00:00",
+            "kind": "tests_failed",
+            "message": "Independent tests did not pass",
+            "detail": {
+              "passed": false,
+              "mode": "docker",
+              "error": null
+            }
+          },
+          {
+            "id": 8,
+            "at": "2026-10-28T03:20:41.147+00:00",
+            "kind": "model_request",
+            "message": "Requesting patch from Nebius",
+            "detail": {
+              "attempt": 1,
+              "model": "nvidia/nemotron-3-super-120b-a12b"
+            }
+          },
+          {
+            "id": 9,
+            "at": "2026-10-28T03:20:43.909+00:00",
+            "kind": "patch_checkpoint",
+            "message": "Patch and reported token usage committed atomically",
+            "detail": {
+              "round": 2,
+              "live": true
+            }
+          },
+          {
+            "id": 10,
+            "at": "2026-10-28T03:20:43.922+00:00",
+            "kind": "testing",
+            "message": "Running independent acceptance tests",
+            "detail": {
+              "mode": "docker"
+            }
+          },
+          {
+            "id": 11,
+            "at": "2026-10-28T03:20:44.468+00:00",
+            "kind": "tests_passed",
+            "message": "Independent tests passed",
+            "detail": {
+              "passed": true,
+              "mode": "docker",
+              "error": null
+            }
+          },
+          {
+            "id": 12,
+            "at": "2026-10-28T03:20:44.483+00:00",
+            "kind": "worker_exited",
+            "message": "Worker process exited",
+            "detail": {
+              "returncode": 0,
+              "active_ms": 5075
+            }
+          }
+        ]
+      },
+      "checks": {
+        "task_passed": true,
+        "live_nvidia_response": true,
+        "docker_acceptance": true,
+        "pinned_model": true,
+        "remote_request_recorded": true,
+        "no_fixture_steps": true
+      }
+    },
+    {
+      "name": "worker_crash_and_resume",
+      "before_resume": {
+        "id": "0b87f69305a44af4",
+        "task_id": "page-slices",
+        "provider": "nebius",
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "policy": "resume",
+        "fault": "worker_crash_after_patch",
+        "status": "crashed",
+        "phase": "validate",
+        "created_at": "2026-10-28T03:20:44.538+00:00",
+        "updated_at": "2026-10-28T03:20:46.195+00:00",
+        "checkpoint": {
+          "source": "def page_slices(total_items, page_size):\n    if total_items < 0:\n        raise ValueError(\"total_items must be non-negative\")\n    if page_size <= 0:\n        raise ValueError(\"page_size must be positive\")\n    slices = []\n    start = 0\n    while start < total_items:\n        end = start + page_size\n        if end > total_items:\n            end = total_items\n        slices.append((start, end))\n        start = end\n    return slices",
+          "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,3 +1,14 @@\n def page_slices(total_items, page_size):\n-    return [(start, start + page_size)\n-            for start in range(0, total_items + 1, page_size)]\n+    if total_items < 0:\n+        raise ValueError(\"total_items must be non-negative\")\n+    if page_size <= 0:\n+        raise ValueError(\"page_size must be positive\")\n+    slices = []\n+    start = 0\n+    while start < total_items:\n+        end = start + page_size\n+        if end > total_items:\n+            end = total_items\n+        slices.append((start, end))\n+        start = end\n+    return slices",
+          "round": 1,
+          "source_sha256": "a49d6d60292af0d2265535aafa360fc69899e4321f3dc5427824bc8e19c9a6ec",
+          "response_model": "nvidia/nemotron-3-super-120b-a12b"
+        },
+        "fault_triggered": true,
+        "request_pending": false,
+        "metrics": {
+          "model_calls": 1,
+          "fixture_calls": 0,
+          "input_tokens": 549,
+          "output_tokens": 182,
+          "elapsed_ms": 1648,
+          "restarts": 0,
+          "retries": 0,
+          "unknown_usage_requests": 0
+        },
+        "eligibility": {
+          "live_nvidia_model": true,
+          "mode_label": "Nebius live NVIDIA model response received"
+        },
+        "notes": [
+          "Results apply only to this task and fault profile; not a production reliability guarantee."
+        ],
+        "versions": {
+          "crashlab": "0.1.0",
+          "runtime_sha256": "9ad74e14f1e6202f2f9c9b9c3d7c1e8caf9367da4427c0bf8d21955302c57f25",
+          "task_sha256": "3a876aabe6a1d1216acf693289b3bc89e4f76b6ae6b7809c4bb2a5525bf30949"
+        },
+        "events": [
+          {
+            "id": 13,
+            "at": "2026-10-28T03:20:44.539+00:00",
+            "kind": "created",
+            "message": "Run created",
+            "detail": {
+              "provider": "nebius",
+              "policy": "resume"
+            }
+          },
+          {
+            "id": 14,
+            "at": "2026-10-28T03:20:44.542+00:00",
+            "kind": "started",
+            "message": "Run started from the beginning",
+            "detail": {}
+          },
+          {
+            "id": 15,
+            "at": "2026-10-28T03:20:44.635+00:00",
+            "kind": "prepared",
+            "message": "Task workspace prepared",
+            "detail": {}
+          },
+          {
+            "id": 16,
+            "at": "2026-10-28T03:20:44.637+00:00",
+            "kind": "model_request",
+            "message": "Requesting patch from Nebius",
+            "detail": {
+              "attempt": 1,
+              "model": "nvidia/nemotron-3-super-120b-a12b"
+            }
+          },
+          {
+            "id": 17,
+            "at": "2026-10-28T03:20:46.176+00:00",
+            "kind": "patch_checkpoint",
+            "message": "Patch and reported token usage committed atomically",
+            "detail": {
+              "round": 1,
+              "live": true
+            }
+          },
+          {
+            "id": 18,
+            "at": "2026-10-28T03:20:46.189+00:00",
+            "kind": "fault_injected",
+            "message": "Worker exits immediately after the durable patch checkpoint",
+            "detail": {
+              "exit_code": 86,
+              "synthetic_trigger": true,
+              "real_process_exit": true
+            }
+          },
+          {
+            "id": 19,
+            "at": "2026-10-28T03:20:46.195+00:00",
+            "kind": "worker_exited",
+            "message": "Worker process exited",
+            "detail": {
+              "returncode": 86,
+              "active_ms": 1648
+            }
+          }
+        ]
+      },
+      "report": {
+        "id": "0b87f69305a44af4",
+        "task_id": "page-slices",
+        "provider": "nebius",
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "policy": "resume",
+        "fault": "worker_crash_after_patch",
+        "status": "passed",
+        "phase": "done",
+        "created_at": "2026-10-28T03:20:44.538+00:00",
+        "updated_at": "2026-10-28T03:20:49.444+00:00",
+        "checkpoint": {
+          "source": "def page_slices(total_items, page_size):\n    if total_items < 0:\n        raise ValueError(\"total_items must be non-negative\")\n    if page_size <= 0:\n        raise ValueError(\"page_size must be positive\")\n    if total_items == 0:\n        return []\n    num_pages = (total_items + page_size - 1) // page_size\n    return [(i * page_size, min((i + 1) * page_size, total_items)) for i in range(num_pages)]",
+          "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,3 +1,9 @@\n def page_slices(total_items, page_size):\n-    return [(start, start + page_size)\n-            for start in range(0, total_items + 1, page_size)]\n+    if total_items < 0:\n+        raise ValueError(\"total_items must be non-negative\")\n+    if page_size <= 0:\n+        raise ValueError(\"page_size must be positive\")\n+    if total_items == 0:\n+        return []\n+    num_pages = (total_items + page_size - 1) // page_size\n+    return [(i * page_size, min((i + 1) * page_size, total_items)) for i in range(num_pages)]",
+          "round": 2,
+          "source_sha256": "d73739b14c5e0866a8164bfecfa3fd3d061f4deabe46af2d5ab4ac4a0f351c17",
+          "response_model": "nvidia/nemotron-3-super-120b-a12b",
+          "tests": {
+            "passed": true,
+            "returncode": 0,
+            "stdout": "test_exact_coverage (test_acceptance.PaginationAcceptance.test_exact_coverage) ... ok\ntest_invalid_bounds (test_acceptance.PaginationAcceptance.test_invalid_bounds) ... ok\ntest_partial_and_large_page (test_acceptance.PaginationAcceptance.test_partial_and_large_page) ... ok\ntest_zero_and_exact_multiple (test_acceptance.PaginationAcceptance.test_zero_and_exact_multiple) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nOK\n",
+            "duration_ms": 492,
+            "mode": "docker"
+          }
+        },
+        "fault_triggered": true,
+        "request_pending": false,
+        "metrics": {
+          "model_calls": 2,
+          "fixture_calls": 0,
+          "input_tokens": 1177,
+          "output_tokens": 527,
+          "elapsed_ms": 4853,
+          "restarts": 1,
+          "retries": 0,
+          "unknown_usage_requests": 0
+        },
+        "eligibility": {
+          "live_nvidia_model": true,
+          "mode_label": "Nebius live NVIDIA model response received"
+        },
+        "notes": [
+          "Results apply only to this task and fault profile; not a production reliability guarantee."
+        ],
+        "versions": {
+          "crashlab": "0.1.0",
+          "runtime_sha256": "9ad74e14f1e6202f2f9c9b9c3d7c1e8caf9367da4427c0bf8d21955302c57f25",
+          "task_sha256": "3a876aabe6a1d1216acf693289b3bc89e4f76b6ae6b7809c4bb2a5525bf30949"
+        },
+        "events": [
+          {
+            "id": 13,
+            "at": "2026-10-28T03:20:44.539+00:00",
+            "kind": "created",
+            "message": "Run created",
+            "detail": {
+              "provider": "nebius",
+              "policy": "resume"
+            }
+          },
+          {
+            "id": 14,
+            "at": "2026-10-28T03:20:44.542+00:00",
+            "kind": "started",
+            "message": "Run started from the beginning",
+            "detail": {}
+          },
+          {
+            "id": 15,
+            "at": "2026-10-28T03:20:44.635+00:00",
+            "kind": "prepared",
+            "message": "Task workspace prepared",
+            "detail": {}
+          },
+          {
+            "id": 16,
+            "at": "2026-10-28T03:20:44.637+00:00",
+            "kind": "model_request",
+            "message": "Requesting patch from Nebius",
+            "detail": {
+              "attempt": 1,
+              "model": "nvidia/nemotron-3-super-120b-a12b"
+            }
+          },
+          {
+            "id": 17,
+            "at": "2026-10-28T03:20:46.176+00:00",
+            "kind": "patch_checkpoint",
+            "message": "Patch and reported token usage committed atomically",
+            "detail": {
+              "round": 1,
+              "live": true
+            }
+          },
+          {
+            "id": 18,
+            "at": "2026-10-28T03:20:46.189+00:00",
+            "kind": "fault_injected",
+            "message": "Worker exits immediately after the durable patch checkpoint",
+            "detail": {
+              "exit_code": 86,
+              "synthetic_trigger": true,
+              "real_process_exit": true
+            }
+          },
+          {
+            "id": 19,
+            "at": "2026-10-28T03:20:46.195+00:00",
+            "kind": "worker_exited",
+            "message": "Worker process exited",
+            "detail": {
+              "returncode": 86,
+              "active_ms": 1648
+            }
+          },
+          {
+            "id": 20,
+            "at": "2026-10-28T03:20:46.235+00:00",
+            "kind": "resumed",
+            "message": "Run resumed from checkpoint",
+            "detail": {}
+          },
+          {
+            "id": 21,
+            "at": "2026-10-28T03:20:46.332+00:00",
+            "kind": "testing",
+            "message": "Running independent acceptance tests",
+            "detail": {
+              "mode": "docker"
+            }
+          },
+          {
+            "id": 22,
+            "at": "2026-10-28T03:20:46.334+00:00",
+            "kind": "tests_failed",
+            "message": "Independent tests did not pass",
+            "detail": {
+              "passed": false,
+              "mode": "docker",
+              "error": null
+            }
+          },
+          {
+            "id": 23,
+            "at": "2026-10-28T03:20:46.336+00:00",
+            "kind": "model_request",
+            "message": "Requesting patch from Nebius",
+            "detail": {
+              "attempt": 1,
+              "model": "nvidia/nemotron-3-super-120b-a12b"
+            }
+          },
+          {
+            "id": 24,
+            "at": "2026-10-28T03:20:48.910+00:00",
+            "kind": "patch_checkpoint",
+            "message": "Patch and reported token usage committed atomically",
+            "detail": {
+              "round": 2,
+              "live": true
+            }
+          },
+          {
+            "id": 25,
+            "at": "2026-10-28T03:20:48.915+00:00",
+            "kind": "testing",
+            "message": "Running independent acceptance tests",
+            "detail": {
+              "mode": "docker"
+            }
+          },
+          {
+            "id": 26,
+            "at": "2026-10-28T03:20:49.429+00:00",
+            "kind": "tests_passed",
+            "message": "Independent tests passed",
+            "detail": {
+              "passed": true,
+              "mode": "docker",
+              "error": null
+            }
+          },
+          {
+            "id": 27,
+            "at": "2026-10-28T03:20:49.444+00:00",
+            "kind": "worker_exited",
+            "message": "Worker process exited",
+            "detail": {
+              "returncode": 0,
+              "active_ms": 3205
+            }
+          }
+        ]
+      },
+      "checks": {
+        "task_passed": true,
+        "live_nvidia_response": true,
+        "docker_acceptance": true,
+        "pinned_model": true,
+        "remote_request_recorded": true,
+        "no_fixture_steps": true,
+        "observed_crashed_status": true,
+        "crashed_after_patch_checkpoint": true,
+        "real_worker_exit_86": true,
+        "same_saved_candidate": false,
+        "no_additional_model_requests_after_resume": false,
+        "known_token_totals_unchanged_on_resume": false,
+        "exactly_one_resume": true,
+        "model_unchanged_on_resume": true
+      },
+      "recovery_comparison": {
+        "source_sha256_before": "a49d6d60292af0d2265535aafa360fc69899e4321f3dc5427824bc8e19c9a6ec",
+        "source_sha256_after": "d73739b14c5e0866a8164bfecfa3fd3d061f4deabe46af2d5ab4ac4a0f351c17",
+        "metrics_before": {
+          "model_calls": 1,
+          "fixture_calls": 0,
+          "input_tokens": 549,
+          "output_tokens": 182,
+          "elapsed_ms": 1648,
+          "restarts": 0,
+          "retries": 0,
+          "unknown_usage_requests": 0
+        },
+        "metrics_after": {
+          "model_calls": 2,
+          "fixture_calls": 0,
+          "input_tokens": 1177,
+          "output_tokens": 527,
+          "elapsed_ms": 4853,
+          "restarts": 1,
+          "retries": 0,
+          "unknown_usage_requests": 0
+        }
+      }
+    }
+  ],
+  "checks": {
+    "no_fault_repair": true,
+    "worker_crash_and_resume": false
+  },
+  "blockers": [
+    "The bounded live verification did not satisfy every acceptance and recovery check."
+  ],
+  "notes": [
+    "Only two experiments are permitted: no fault, then worker crash and one resume.",
+    "Token totals are reported known usage. Unknown requests may have incurred provider charges.",
+    "Checkpoint recovery does not guarantee arbitrary external calls execute exactly once.",
+    "These small task checks are not a general coding-quality or production reliability benchmark."
+  ],
+  "finished_at": "2026-10-28T03:20:49.467+00:00"
+}

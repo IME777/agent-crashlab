@@ -1,0 +1,44 @@
+name: Offline verification
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.14']
+      fail-fast: false
+    env:
+      NEBIUS_API_KEY: ''
+      NEBIUS_MODEL: ''
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Verify offline behavior and safety boundaries
+        run: python -m unittest discover -s tests -v
+      - name: Run the offline fault matrix
+        run: python -m crashlab --data /tmp/crashlab-ci check --output dist/ci-offline-check.json
+      - name: Build sanitized source archive
+        run: python -m scripts.package_release
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: offline-evidence-python-${{ matrix.python-version }}
+          path: dist/
+          if-no-files-found: error
+          retention-days: 60

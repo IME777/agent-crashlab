@@ -1,0 +1,2723 @@
+{
+  "schema_version": "1",
+  "created_at": "2026-10-28T02:55:40.556+00:00",
+  "provider": "fixture",
+  "gate_passed": true,
+  "expected_runs": 18,
+  "completed_runs": 18,
+  "reports": [
+    {
+      "id": "9063e2bfdbc04586",
+      "task_id": "capped-backoff",
+      "provider": "fixture",
+      "model": "trusted-fixture-v1",
+      "policy": "restart",
+      "fault": "none",
+      "status": "passed",
+      "phase": "done",
+      "created_at": "2026-10-28T02:55:35.825+00:00",
+      "updated_at": "2026-10-28T02:55:35.949+00:00",
+      "checkpoint": {
+        "source": "def capped_backoff(attempt, base_seconds, cap_seconds):\n    if attempt < 0 or base_seconds < 0 or cap_seconds < 0:\n        raise ValueError(\"backoff values must be non-negative\")\n    delay = min(base_seconds, cap_seconds)\n    if delay == 0:\n        return delay\n    for _ in range(attempt):\n        delay = min(cap_seconds, delay * 2)\n        if delay == cap_seconds:\n            break\n    return delay\n",
+        "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,2 +1,11 @@\n def capped_backoff(attempt, base_seconds, cap_seconds):\n-    return min(base_seconds, cap_seconds) * (2 ** attempt)\n+    if attempt < 0 or base_seconds < 0 or cap_seconds < 0:\n+        raise ValueError(\"backoff values must be non-negative\")\n+    delay = min(base_seconds, cap_seconds)\n+    if delay == 0:\n+        return delay\n+    for _ in range(attempt):\n+        delay = min(cap_seconds, delay * 2)\n+        if delay == cap_seconds:\n+            break\n+    return delay\n",
+        "round": 1,
+        "source_sha256": "0689686fd73e24e8831d71a2ceb2145479116ed1e3685eb2beac1a67f28ce8ec",
+        "response_model": "trusted-fixture-v1",
+        "tests": {
+          "passed": true,
+          "returncode": 0,
+          "stdout": "test_cap_applies_after_growth (test_acceptance.BackoffAcceptance.test_cap_applies_after_growth) ... ok\ntest_initial_and_growth (test_acceptance.BackoffAcceptance.test_initial_and_growth) ... ok\ntest_negative_values_rejected (test_acceptance.BackoffAcceptance.test_negative_values_rejected) ... ok\ntest_zero_and_large_attempt (test_acceptance.BackoffAcceptance.test_zero_and_large_attempt) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "duration_ms": 38,
+          "mode": "fixture"
+        }
+      },
+      "fault_triggered": false,
+      "request_pending": false,
+      "metrics": {
+        "model_calls": 0,
+        "fixture_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "elapsed_ms": 118,
+        "restarts": 0,
+        "retries": 0,
+        "unknown_usage_requests": 0
+      },
+      "eligibility": {
+        "live_nvidia_model": false,
+        "mode_label": "Offline fixture — no model API calls"
+      },
+      "notes": [
+        "Results apply only to this task and fault profile; not a production reliability guarantee."
+      ],
+      "versions": {
+        "crashlab": "0.1.0",
+        "runtime_sha256": "a6e379310882c197c00fb29c38ce6ed50e510c1fc98c5a3db2a9c9fc2796d124",
+        "task_sha256": "0ab2ce093f69d915bc18842ac20f686c41f5b6a1a953cdf714d68245cfe00d21"
+      },
+      "events": [
+        {
+          "id": 1,
+          "at": "2026-10-28T02:55:35.826+00:00",
+          "kind": "created",
+          "message": "Run created",
+          "detail": {
+            "provider": "fixture",
+            "policy": "restart"
+          }
+        },
+        {
+          "id": 2,
+          "at": "2026-10-28T02:55:35.828+00:00",
+          "kind": "started",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 3,
+          "at": "2026-10-28T02:55:35.895+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 4,
+          "at": "2026-10-28T02:55:35.896+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 5,
+          "at": "2026-10-28T02:55:35.898+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 6,
+          "at": "2026-10-28T02:55:35.900+00:00",
+          "kind": "testing",
+          "message": "Running independent acceptance tests",
+          "detail": {
+            "mode": "fixture"
+          }
+        },
+        {
+          "id": 7,
+          "at": "2026-10-28T02:55:35.940+00:00",
+          "kind": "tests_passed",
+          "message": "Independent tests passed",
+          "detail": {
+            "passed": true,
+            "mode": "fixture",
+            "error": null
+          }
+        },
+        {
+          "id": 8,
+          "at": "2026-10-28T02:55:35.949+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 0,
+            "active_ms": 118
+          }
+        }
+      ],
+      "release_checks": {
+        "acceptance_passed": true,
+        "fault_profile_verified": true,
+        "provider_evidence_valid": true
+      }
+    },
+    {
+      "id": "845cee2972d647d8",
+      "task_id": "capped-backoff",
+      "provider": "fixture",
+      "model": "trusted-fixture-v1",
+      "policy": "restart",
+      "fault": "worker_crash_after_patch",
+      "status": "passed",
+      "phase": "done",
+      "created_at": "2026-10-28T02:55:35.994+00:00",
+      "updated_at": "2026-10-28T02:55:36.222+00:00",
+      "checkpoint": {
+        "source": "def capped_backoff(attempt, base_seconds, cap_seconds):\n    if attempt < 0 or base_seconds < 0 or cap_seconds < 0:\n        raise ValueError(\"backoff values must be non-negative\")\n    delay = min(base_seconds, cap_seconds)\n    if delay == 0:\n        return delay\n    for _ in range(attempt):\n        delay = min(cap_seconds, delay * 2)\n        if delay == cap_seconds:\n            break\n    return delay\n",
+        "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,2 +1,11 @@\n def capped_backoff(attempt, base_seconds, cap_seconds):\n-    return min(base_seconds, cap_seconds) * (2 ** attempt)\n+    if attempt < 0 or base_seconds < 0 or cap_seconds < 0:\n+        raise ValueError(\"backoff values must be non-negative\")\n+    delay = min(base_seconds, cap_seconds)\n+    if delay == 0:\n+        return delay\n+    for _ in range(attempt):\n+        delay = min(cap_seconds, delay * 2)\n+        if delay == cap_seconds:\n+            break\n+    return delay\n",
+        "round": 1,
+        "source_sha256": "0689686fd73e24e8831d71a2ceb2145479116ed1e3685eb2beac1a67f28ce8ec",
+        "response_model": "trusted-fixture-v1",
+        "tests": {
+          "passed": true,
+          "returncode": 0,
+          "stdout": "test_cap_applies_after_growth (test_acceptance.BackoffAcceptance.test_cap_applies_after_growth) ... ok\ntest_initial_and_growth (test_acceptance.BackoffAcceptance.test_initial_and_growth) ... ok\ntest_negative_values_rejected (test_acceptance.BackoffAcceptance.test_negative_values_rejected) ... ok\ntest_zero_and_large_attempt (test_acceptance.BackoffAcceptance.test_zero_and_large_attempt) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "duration_ms": 39,
+          "mode": "fixture"
+        }
+      },
+      "fault_triggered": true,
+      "request_pending": false,
+      "metrics": {
+        "model_calls": 0,
+        "fixture_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "elapsed_ms": 170,
+        "restarts": 1,
+        "retries": 0,
+        "unknown_usage_requests": 0
+      },
+      "eligibility": {
+        "live_nvidia_model": false,
+        "mode_label": "Offline fixture — no model API calls"
+      },
+      "notes": [
+        "Results apply only to this task and fault profile; not a production reliability guarantee."
+      ],
+      "versions": {
+        "crashlab": "0.1.0",
+        "runtime_sha256": "a6e379310882c197c00fb29c38ce6ed50e510c1fc98c5a3db2a9c9fc2796d124",
+        "task_sha256": "0ab2ce093f69d915bc18842ac20f686c41f5b6a1a953cdf714d68245cfe00d21"
+      },
+      "events": [
+        {
+          "id": 9,
+          "at": "2026-10-28T02:55:35.995+00:00",
+          "kind": "created",
+          "message": "Run created",
+          "detail": {
+            "provider": "fixture",
+            "policy": "restart"
+          }
+        },
+        {
+          "id": 10,
+          "at": "2026-10-28T02:55:35.997+00:00",
+          "kind": "started",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 11,
+          "at": "2026-10-28T02:55:36.054+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 12,
+          "at": "2026-10-28T02:55:36.056+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 13,
+          "at": "2026-10-28T02:55:36.057+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 14,
+          "at": "2026-10-28T02:55:36.059+00:00",
+          "kind": "fault_injected",
+          "message": "Worker exits immediately after the durable patch checkpoint",
+          "detail": {
+            "exit_code": 86,
+            "synthetic_trigger": true,
+            "real_process_exit": true
+          }
+        },
+        {
+          "id": 15,
+          "at": "2026-10-28T02:55:36.061+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 86,
+            "active_ms": 62
+          }
+        },
+        {
+          "id": 16,
+          "at": "2026-10-28T02:55:36.111+00:00",
+          "kind": "resumed",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 17,
+          "at": "2026-10-28T02:55:36.166+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 18,
+          "at": "2026-10-28T02:55:36.168+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 19,
+          "at": "2026-10-28T02:55:36.169+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 20,
+          "at": "2026-10-28T02:55:36.172+00:00",
+          "kind": "testing",
+          "message": "Running independent acceptance tests",
+          "detail": {
+            "mode": "fixture"
+          }
+        },
+        {
+          "id": 21,
+          "at": "2026-10-28T02:55:36.213+00:00",
+          "kind": "tests_passed",
+          "message": "Independent tests passed",
+          "detail": {
+            "passed": true,
+            "mode": "fixture",
+            "error": null
+          }
+        },
+        {
+          "id": 22,
+          "at": "2026-10-28T02:55:36.222+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 0,
+            "active_ms": 108
+          }
+        }
+      ],
+      "release_checks": {
+        "acceptance_passed": true,
+        "fault_profile_verified": true,
+        "provider_evidence_valid": true
+      }
+    },
+    {
+      "id": "940e1c005fe644b8",
+      "task_id": "capped-backoff",
+      "provider": "fixture",
+      "model": "trusted-fixture-v1",
+      "policy": "restart",
+      "fault": "model_429_once",
+      "status": "passed",
+      "phase": "done",
+      "created_at": "2026-10-28T02:55:36.224+00:00",
+      "updated_at": "2026-10-28T02:55:36.558+00:00",
+      "checkpoint": {
+        "source": "def capped_backoff(attempt, base_seconds, cap_seconds):\n    if attempt < 0 or base_seconds < 0 or cap_seconds < 0:\n        raise ValueError(\"backoff values must be non-negative\")\n    delay = min(base_seconds, cap_seconds)\n    if delay == 0:\n        return delay\n    for _ in range(attempt):\n        delay = min(cap_seconds, delay * 2)\n        if delay == cap_seconds:\n            break\n    return delay\n",
+        "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,2 +1,11 @@\n def capped_backoff(attempt, base_seconds, cap_seconds):\n-    return min(base_seconds, cap_seconds) * (2 ** attempt)\n+    if attempt < 0 or base_seconds < 0 or cap_seconds < 0:\n+        raise ValueError(\"backoff values must be non-negative\")\n+    delay = min(base_seconds, cap_seconds)\n+    if delay == 0:\n+        return delay\n+    for _ in range(attempt):\n+        delay = min(cap_seconds, delay * 2)\n+        if delay == cap_seconds:\n+            break\n+    return delay\n",
+        "round": 1,
+        "source_sha256": "0689686fd73e24e8831d71a2ceb2145479116ed1e3685eb2beac1a67f28ce8ec",
+        "response_model": "trusted-fixture-v1",
+        "tests": {
+          "passed": true,
+          "returncode": 0,
+          "stdout": "test_cap_applies_after_growth (test_acceptance.BackoffAcceptance.test_cap_applies_after_growth) ... ok\ntest_initial_and_growth (test_acceptance.BackoffAcceptance.test_initial_and_growth) ... ok\ntest_negative_values_rejected (test_acceptance.BackoffAcceptance.test_negative_values_rejected) ... ok\ntest_zero_and_large_attempt (test_acceptance.BackoffAcceptance.test_zero_and_large_attempt) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "duration_ms": 46,
+          "mode": "fixture"
+        }
+      },
+      "fault_triggered": true,
+      "request_pending": false,
+      "metrics": {
+        "model_calls": 0,
+        "fixture_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "elapsed_ms": 330,
+        "restarts": 0,
+        "retries": 1,
+        "unknown_usage_requests": 0
+      },
+      "eligibility": {
+        "live_nvidia_model": false,
+        "mode_label": "Offline fixture — no model API calls"
+      },
+      "notes": [
+        "Results apply only to this task and fault profile; not a production reliability guarantee."
+      ],
+      "versions": {
+        "crashlab": "0.1.0",
+        "runtime_sha256": "a6e379310882c197c00fb29c38ce6ed50e510c1fc98c5a3db2a9c9fc2796d124",
+        "task_sha256": "0ab2ce093f69d915bc18842ac20f686c41f5b6a1a953cdf714d68245cfe00d21"
+      },
+      "events": [
+        {
+          "id": 23,
+          "at": "2026-10-28T02:55:36.224+00:00",
+          "kind": "created",
+          "message": "Run created",
+          "detail": {
+            "provider": "fixture",
+            "policy": "restart"
+          }
+        },
+        {
+          "id": 24,
+          "at": "2026-10-28T02:55:36.226+00:00",
+          "kind": "started",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 25,
+          "at": "2026-10-28T02:55:36.284+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 26,
+          "at": "2026-10-28T02:55:36.286+00:00",
+          "kind": "fault_injected",
+          "message": "Synthetic HTTP 429 injected before provider call",
+          "detail": {
+            "synthetic": true,
+            "actual_api_request": false
+          }
+        },
+        {
+          "id": 27,
+          "at": "2026-10-28T02:55:36.287+00:00",
+          "kind": "retry",
+          "message": "Bounded retry after injected 429",
+          "detail": {}
+        },
+        {
+          "id": 28,
+          "at": "2026-10-28T02:55:36.494+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 29,
+          "at": "2026-10-28T02:55:36.497+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 30,
+          "at": "2026-10-28T02:55:36.500+00:00",
+          "kind": "testing",
+          "message": "Running independent acceptance tests",
+          "detail": {
+            "mode": "fixture"
+          }
+        },
+        {
+          "id": 31,
+          "at": "2026-10-28T02:55:36.548+00:00",
+          "kind": "tests_passed",
+          "message": "Independent tests passed",
+          "detail": {
+            "passed": true,
+            "mode": "fixture",
+            "error": null
+          }
+        },
+        {
+          "id": 32,
+          "at": "2026-10-28T02:55:36.558+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 0,
+            "active_ms": 330
+          }
+        }
+      ],
+      "release_checks": {
+        "acceptance_passed": true,
+        "fault_profile_verified": true,
+        "provider_evidence_valid": true
+      }
+    },
+    {
+      "id": "e3706991f9fe4873",
+      "task_id": "capped-backoff",
+      "provider": "fixture",
+      "model": "trusted-fixture-v1",
+      "policy": "resume",
+      "fault": "none",
+      "status": "passed",
+      "phase": "done",
+      "created_at": "2026-10-28T02:55:36.611+00:00",
+      "updated_at": "2026-10-28T02:55:36.728+00:00",
+      "checkpoint": {
+        "source": "def capped_backoff(attempt, base_seconds, cap_seconds):\n    if attempt < 0 or base_seconds < 0 or cap_seconds < 0:\n        raise ValueError(\"backoff values must be non-negative\")\n    delay = min(base_seconds, cap_seconds)\n    if delay == 0:\n        return delay\n    for _ in range(attempt):\n        delay = min(cap_seconds, delay * 2)\n        if delay == cap_seconds:\n            break\n    return delay\n",
+        "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,2 +1,11 @@\n def capped_backoff(attempt, base_seconds, cap_seconds):\n-    return min(base_seconds, cap_seconds) * (2 ** attempt)\n+    if attempt < 0 or base_seconds < 0 or cap_seconds < 0:\n+        raise ValueError(\"backoff values must be non-negative\")\n+    delay = min(base_seconds, cap_seconds)\n+    if delay == 0:\n+        return delay\n+    for _ in range(attempt):\n+        delay = min(cap_seconds, delay * 2)\n+        if delay == cap_seconds:\n+            break\n+    return delay\n",
+        "round": 1,
+        "source_sha256": "0689686fd73e24e8831d71a2ceb2145479116ed1e3685eb2beac1a67f28ce8ec",
+        "response_model": "trusted-fixture-v1",
+        "tests": {
+          "passed": true,
+          "returncode": 0,
+          "stdout": "test_cap_applies_after_growth (test_acceptance.BackoffAcceptance.test_cap_applies_after_growth) ... ok\ntest_initial_and_growth (test_acceptance.BackoffAcceptance.test_initial_and_growth) ... ok\ntest_negative_values_rejected (test_acceptance.BackoffAcceptance.test_negative_values_rejected) ... ok\ntest_zero_and_large_attempt (test_acceptance.BackoffAcceptance.test_zero_and_large_attempt) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "duration_ms": 37,
+          "mode": "fixture"
+        }
+      },
+      "fault_triggered": false,
+      "request_pending": false,
+      "metrics": {
+        "model_calls": 0,
+        "fixture_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "elapsed_ms": 111,
+        "restarts": 0,
+        "retries": 0,
+        "unknown_usage_requests": 0
+      },
+      "eligibility": {
+        "live_nvidia_model": false,
+        "mode_label": "Offline fixture — no model API calls"
+      },
+      "notes": [
+        "Results apply only to this task and fault profile; not a production reliability guarantee."
+      ],
+      "versions": {
+        "crashlab": "0.1.0",
+        "runtime_sha256": "a6e379310882c197c00fb29c38ce6ed50e510c1fc98c5a3db2a9c9fc2796d124",
+        "task_sha256": "0ab2ce093f69d915bc18842ac20f686c41f5b6a1a953cdf714d68245cfe00d21"
+      },
+      "events": [
+        {
+          "id": 33,
+          "at": "2026-10-28T02:55:36.611+00:00",
+          "kind": "created",
+          "message": "Run created",
+          "detail": {
+            "provider": "fixture",
+            "policy": "resume"
+          }
+        },
+        {
+          "id": 34,
+          "at": "2026-10-28T02:55:36.613+00:00",
+          "kind": "started",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 35,
+          "at": "2026-10-28T02:55:36.674+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 36,
+          "at": "2026-10-28T02:55:36.676+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 37,
+          "at": "2026-10-28T02:55:36.678+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 38,
+          "at": "2026-10-28T02:55:36.680+00:00",
+          "kind": "testing",
+          "message": "Running independent acceptance tests",
+          "detail": {
+            "mode": "fixture"
+          }
+        },
+        {
+          "id": 39,
+          "at": "2026-10-28T02:55:36.719+00:00",
+          "kind": "tests_passed",
+          "message": "Independent tests passed",
+          "detail": {
+            "passed": true,
+            "mode": "fixture",
+            "error": null
+          }
+        },
+        {
+          "id": 40,
+          "at": "2026-10-28T02:55:36.728+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 0,
+            "active_ms": 111
+          }
+        }
+      ],
+      "release_checks": {
+        "acceptance_passed": true,
+        "fault_profile_verified": true,
+        "provider_evidence_valid": true
+      }
+    },
+    {
+      "id": "be46892ad09c46bb",
+      "task_id": "capped-backoff",
+      "provider": "fixture",
+      "model": "trusted-fixture-v1",
+      "policy": "resume",
+      "fault": "worker_crash_after_patch",
+      "status": "passed",
+      "phase": "done",
+      "created_at": "2026-10-28T02:55:36.777+00:00",
+      "updated_at": "2026-10-28T02:55:37.012+00:00",
+      "checkpoint": {
+        "source": "def capped_backoff(attempt, base_seconds, cap_seconds):\n    if attempt < 0 or base_seconds < 0 or cap_seconds < 0:\n        raise ValueError(\"backoff values must be non-negative\")\n    delay = min(base_seconds, cap_seconds)\n    if delay == 0:\n        return delay\n    for _ in range(attempt):\n        delay = min(cap_seconds, delay * 2)\n        if delay == cap_seconds:\n            break\n    return delay\n",
+        "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,2 +1,11 @@\n def capped_backoff(attempt, base_seconds, cap_seconds):\n-    return min(base_seconds, cap_seconds) * (2 ** attempt)\n+    if attempt < 0 or base_seconds < 0 or cap_seconds < 0:\n+        raise ValueError(\"backoff values must be non-negative\")\n+    delay = min(base_seconds, cap_seconds)\n+    if delay == 0:\n+        return delay\n+    for _ in range(attempt):\n+        delay = min(cap_seconds, delay * 2)\n+        if delay == cap_seconds:\n+            break\n+    return delay\n",
+        "round": 1,
+        "source_sha256": "0689686fd73e24e8831d71a2ceb2145479116ed1e3685eb2beac1a67f28ce8ec",
+        "response_model": "trusted-fixture-v1",
+        "tests": {
+          "passed": true,
+          "returncode": 0,
+          "stdout": "test_cap_applies_after_growth (test_acceptance.BackoffAcceptance.test_cap_applies_after_growth) ... ok\ntest_initial_and_growth (test_acceptance.BackoffAcceptance.test_initial_and_growth) ... ok\ntest_negative_values_rejected (test_acceptance.BackoffAcceptance.test_negative_values_rejected) ... ok\ntest_zero_and_large_attempt (test_acceptance.BackoffAcceptance.test_zero_and_large_attempt) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "duration_ms": 39,
+          "mode": "fixture"
+        }
+      },
+      "fault_triggered": true,
+      "request_pending": false,
+      "metrics": {
+        "model_calls": 0,
+        "fixture_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "elapsed_ms": 177,
+        "restarts": 1,
+        "retries": 0,
+        "unknown_usage_requests": 0
+      },
+      "eligibility": {
+        "live_nvidia_model": false,
+        "mode_label": "Offline fixture — no model API calls"
+      },
+      "notes": [
+        "Results apply only to this task and fault profile; not a production reliability guarantee."
+      ],
+      "versions": {
+        "crashlab": "0.1.0",
+        "runtime_sha256": "a6e379310882c197c00fb29c38ce6ed50e510c1fc98c5a3db2a9c9fc2796d124",
+        "task_sha256": "0ab2ce093f69d915bc18842ac20f686c41f5b6a1a953cdf714d68245cfe00d21"
+      },
+      "events": [
+        {
+          "id": 41,
+          "at": "2026-10-28T02:55:36.777+00:00",
+          "kind": "created",
+          "message": "Run created",
+          "detail": {
+            "provider": "fixture",
+            "policy": "resume"
+          }
+        },
+        {
+          "id": 42,
+          "at": "2026-10-28T02:55:36.779+00:00",
+          "kind": "started",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 43,
+          "at": "2026-10-28T02:55:36.838+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 44,
+          "at": "2026-10-28T02:55:36.840+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 45,
+          "at": "2026-10-28T02:55:36.842+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 46,
+          "at": "2026-10-28T02:55:36.844+00:00",
+          "kind": "fault_injected",
+          "message": "Worker exits immediately after the durable patch checkpoint",
+          "detail": {
+            "exit_code": 86,
+            "synthetic_trigger": true,
+            "real_process_exit": true
+          }
+        },
+        {
+          "id": 47,
+          "at": "2026-10-28T02:55:36.846+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 86,
+            "active_ms": 63
+          }
+        },
+        {
+          "id": 48,
+          "at": "2026-10-28T02:55:36.895+00:00",
+          "kind": "resumed",
+          "message": "Run resumed from checkpoint",
+          "detail": {}
+        },
+        {
+          "id": 49,
+          "at": "2026-10-28T02:55:36.962+00:00",
+          "kind": "testing",
+          "message": "Running independent acceptance tests",
+          "detail": {
+            "mode": "fixture"
+          }
+        },
+        {
+          "id": 50,
+          "at": "2026-10-28T02:55:37.002+00:00",
+          "kind": "tests_passed",
+          "message": "Independent tests passed",
+          "detail": {
+            "passed": true,
+            "mode": "fixture",
+            "error": null
+          }
+        },
+        {
+          "id": 51,
+          "at": "2026-10-28T02:55:37.012+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 0,
+            "active_ms": 114
+          }
+        }
+      ],
+      "release_checks": {
+        "acceptance_passed": true,
+        "fault_profile_verified": true,
+        "provider_evidence_valid": true
+      }
+    },
+    {
+      "id": "93a2a6be6bdd4d6a",
+      "task_id": "capped-backoff",
+      "provider": "fixture",
+      "model": "trusted-fixture-v1",
+      "policy": "resume",
+      "fault": "model_429_once",
+      "status": "passed",
+      "phase": "done",
+      "created_at": "2026-10-28T02:55:37.063+00:00",
+      "updated_at": "2026-10-28T02:55:37.409+00:00",
+      "checkpoint": {
+        "source": "def capped_backoff(attempt, base_seconds, cap_seconds):\n    if attempt < 0 or base_seconds < 0 or cap_seconds < 0:\n        raise ValueError(\"backoff values must be non-negative\")\n    delay = min(base_seconds, cap_seconds)\n    if delay == 0:\n        return delay\n    for _ in range(attempt):\n        delay = min(cap_seconds, delay * 2)\n        if delay == cap_seconds:\n            break\n    return delay\n",
+        "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,2 +1,11 @@\n def capped_backoff(attempt, base_seconds, cap_seconds):\n-    return min(base_seconds, cap_seconds) * (2 ** attempt)\n+    if attempt < 0 or base_seconds < 0 or cap_seconds < 0:\n+        raise ValueError(\"backoff values must be non-negative\")\n+    delay = min(base_seconds, cap_seconds)\n+    if delay == 0:\n+        return delay\n+    for _ in range(attempt):\n+        delay = min(cap_seconds, delay * 2)\n+        if delay == cap_seconds:\n+            break\n+    return delay\n",
+        "round": 1,
+        "source_sha256": "0689686fd73e24e8831d71a2ceb2145479116ed1e3685eb2beac1a67f28ce8ec",
+        "response_model": "trusted-fixture-v1",
+        "tests": {
+          "passed": true,
+          "returncode": 0,
+          "stdout": "test_cap_applies_after_growth (test_acceptance.BackoffAcceptance.test_cap_applies_after_growth) ... ok\ntest_initial_and_growth (test_acceptance.BackoffAcceptance.test_initial_and_growth) ... ok\ntest_negative_values_rejected (test_acceptance.BackoffAcceptance.test_negative_values_rejected) ... ok\ntest_zero_and_large_attempt (test_acceptance.BackoffAcceptance.test_zero_and_large_attempt) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "duration_ms": 55,
+          "mode": "fixture"
+        }
+      },
+      "fault_triggered": true,
+      "request_pending": false,
+      "metrics": {
+        "model_calls": 0,
+        "fixture_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "elapsed_ms": 340,
+        "restarts": 0,
+        "retries": 1,
+        "unknown_usage_requests": 0
+      },
+      "eligibility": {
+        "live_nvidia_model": false,
+        "mode_label": "Offline fixture — no model API calls"
+      },
+      "notes": [
+        "Results apply only to this task and fault profile; not a production reliability guarantee."
+      ],
+      "versions": {
+        "crashlab": "0.1.0",
+        "runtime_sha256": "a6e379310882c197c00fb29c38ce6ed50e510c1fc98c5a3db2a9c9fc2796d124",
+        "task_sha256": "0ab2ce093f69d915bc18842ac20f686c41f5b6a1a953cdf714d68245cfe00d21"
+      },
+      "events": [
+        {
+          "id": 52,
+          "at": "2026-10-28T02:55:37.063+00:00",
+          "kind": "created",
+          "message": "Run created",
+          "detail": {
+            "provider": "fixture",
+            "policy": "resume"
+          }
+        },
+        {
+          "id": 53,
+          "at": "2026-10-28T02:55:37.065+00:00",
+          "kind": "started",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 54,
+          "at": "2026-10-28T02:55:37.122+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 55,
+          "at": "2026-10-28T02:55:37.123+00:00",
+          "kind": "fault_injected",
+          "message": "Synthetic HTTP 429 injected before provider call",
+          "detail": {
+            "synthetic": true,
+            "actual_api_request": false
+          }
+        },
+        {
+          "id": 56,
+          "at": "2026-10-28T02:55:37.125+00:00",
+          "kind": "retry",
+          "message": "Bounded retry after injected 429",
+          "detail": {}
+        },
+        {
+          "id": 57,
+          "at": "2026-10-28T02:55:37.330+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 58,
+          "at": "2026-10-28T02:55:37.333+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 59,
+          "at": "2026-10-28T02:55:37.338+00:00",
+          "kind": "testing",
+          "message": "Running independent acceptance tests",
+          "detail": {
+            "mode": "fixture"
+          }
+        },
+        {
+          "id": 60,
+          "at": "2026-10-28T02:55:37.396+00:00",
+          "kind": "tests_passed",
+          "message": "Independent tests passed",
+          "detail": {
+            "passed": true,
+            "mode": "fixture",
+            "error": null
+          }
+        },
+        {
+          "id": 61,
+          "at": "2026-10-28T02:55:37.409+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 0,
+            "active_ms": 340
+          }
+        }
+      ],
+      "release_checks": {
+        "acceptance_passed": true,
+        "fault_profile_verified": true,
+        "provider_evidence_valid": true
+      }
+    },
+    {
+      "id": "6d89a99bcf6c49be",
+      "task_id": "page-slices",
+      "provider": "fixture",
+      "model": "trusted-fixture-v1",
+      "policy": "restart",
+      "fault": "none",
+      "status": "passed",
+      "phase": "done",
+      "created_at": "2026-10-28T02:55:37.442+00:00",
+      "updated_at": "2026-10-28T02:55:37.560+00:00",
+      "checkpoint": {
+        "source": "def page_slices(total_items, page_size):\n    if total_items < 0 or page_size <= 0:\n        raise ValueError(\"invalid pagination bounds\")\n    return [(start, min(start + page_size, total_items))\n            for start in range(0, total_items, page_size)]\n",
+        "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,3 +1,5 @@\n def page_slices(total_items, page_size):\n-    return [(start, start + page_size)\n-            for start in range(0, total_items + 1, page_size)]\n+    if total_items < 0 or page_size <= 0:\n+        raise ValueError(\"invalid pagination bounds\")\n+    return [(start, min(start + page_size, total_items))\n+            for start in range(0, total_items, page_size)]\n",
+        "round": 1,
+        "source_sha256": "b08224bf5de7a7516c44e82f94b76228308a9ad928503103384c7892d2d57a87",
+        "response_model": "trusted-fixture-v1",
+        "tests": {
+          "passed": true,
+          "returncode": 0,
+          "stdout": "test_exact_coverage (test_acceptance.PaginationAcceptance.test_exact_coverage) ... ok\ntest_invalid_bounds (test_acceptance.PaginationAcceptance.test_invalid_bounds) ... ok\ntest_partial_and_large_page (test_acceptance.PaginationAcceptance.test_partial_and_large_page) ... ok\ntest_zero_and_exact_multiple (test_acceptance.PaginationAcceptance.test_zero_and_exact_multiple) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "duration_ms": 40,
+          "mode": "fixture"
+        }
+      },
+      "fault_triggered": false,
+      "request_pending": false,
+      "metrics": {
+        "model_calls": 0,
+        "fixture_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "elapsed_ms": 112,
+        "restarts": 0,
+        "retries": 0,
+        "unknown_usage_requests": 0
+      },
+      "eligibility": {
+        "live_nvidia_model": false,
+        "mode_label": "Offline fixture — no model API calls"
+      },
+      "notes": [
+        "Results apply only to this task and fault profile; not a production reliability guarantee."
+      ],
+      "versions": {
+        "crashlab": "0.1.0",
+        "runtime_sha256": "a6e379310882c197c00fb29c38ce6ed50e510c1fc98c5a3db2a9c9fc2796d124",
+        "task_sha256": "3a876aabe6a1d1216acf693289b3bc89e4f76b6ae6b7809c4bb2a5525bf30949"
+      },
+      "events": [
+        {
+          "id": 62,
+          "at": "2026-10-28T02:55:37.442+00:00",
+          "kind": "created",
+          "message": "Run created",
+          "detail": {
+            "provider": "fixture",
+            "policy": "restart"
+          }
+        },
+        {
+          "id": 63,
+          "at": "2026-10-28T02:55:37.444+00:00",
+          "kind": "started",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 64,
+          "at": "2026-10-28T02:55:37.502+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 65,
+          "at": "2026-10-28T02:55:37.504+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 66,
+          "at": "2026-10-28T02:55:37.506+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 67,
+          "at": "2026-10-28T02:55:37.508+00:00",
+          "kind": "testing",
+          "message": "Running independent acceptance tests",
+          "detail": {
+            "mode": "fixture"
+          }
+        },
+        {
+          "id": 68,
+          "at": "2026-10-28T02:55:37.550+00:00",
+          "kind": "tests_passed",
+          "message": "Independent tests passed",
+          "detail": {
+            "passed": true,
+            "mode": "fixture",
+            "error": null
+          }
+        },
+        {
+          "id": 69,
+          "at": "2026-10-28T02:55:37.560+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 0,
+            "active_ms": 112
+          }
+        }
+      ],
+      "release_checks": {
+        "acceptance_passed": true,
+        "fault_profile_verified": true,
+        "provider_evidence_valid": true
+      }
+    },
+    {
+      "id": "a67096570d2b4ebe",
+      "task_id": "page-slices",
+      "provider": "fixture",
+      "model": "trusted-fixture-v1",
+      "policy": "restart",
+      "fault": "worker_crash_after_patch",
+      "status": "passed",
+      "phase": "done",
+      "created_at": "2026-10-28T02:55:37.605+00:00",
+      "updated_at": "2026-10-28T02:55:37.834+00:00",
+      "checkpoint": {
+        "source": "def page_slices(total_items, page_size):\n    if total_items < 0 or page_size <= 0:\n        raise ValueError(\"invalid pagination bounds\")\n    return [(start, min(start + page_size, total_items))\n            for start in range(0, total_items, page_size)]\n",
+        "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,3 +1,5 @@\n def page_slices(total_items, page_size):\n-    return [(start, start + page_size)\n-            for start in range(0, total_items + 1, page_size)]\n+    if total_items < 0 or page_size <= 0:\n+        raise ValueError(\"invalid pagination bounds\")\n+    return [(start, min(start + page_size, total_items))\n+            for start in range(0, total_items, page_size)]\n",
+        "round": 1,
+        "source_sha256": "b08224bf5de7a7516c44e82f94b76228308a9ad928503103384c7892d2d57a87",
+        "response_model": "trusted-fixture-v1",
+        "tests": {
+          "passed": true,
+          "returncode": 0,
+          "stdout": "test_exact_coverage (test_acceptance.PaginationAcceptance.test_exact_coverage) ... ok\ntest_invalid_bounds (test_acceptance.PaginationAcceptance.test_invalid_bounds) ... ok\ntest_partial_and_large_page (test_acceptance.PaginationAcceptance.test_partial_and_large_page) ... ok\ntest_zero_and_exact_multiple (test_acceptance.PaginationAcceptance.test_zero_and_exact_multiple) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "duration_ms": 42,
+          "mode": "fixture"
+        }
+      },
+      "fault_triggered": true,
+      "request_pending": false,
+      "metrics": {
+        "model_calls": 0,
+        "fixture_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "elapsed_ms": 176,
+        "restarts": 1,
+        "retries": 0,
+        "unknown_usage_requests": 0
+      },
+      "eligibility": {
+        "live_nvidia_model": false,
+        "mode_label": "Offline fixture — no model API calls"
+      },
+      "notes": [
+        "Results apply only to this task and fault profile; not a production reliability guarantee."
+      ],
+      "versions": {
+        "crashlab": "0.1.0",
+        "runtime_sha256": "a6e379310882c197c00fb29c38ce6ed50e510c1fc98c5a3db2a9c9fc2796d124",
+        "task_sha256": "3a876aabe6a1d1216acf693289b3bc89e4f76b6ae6b7809c4bb2a5525bf30949"
+      },
+      "events": [
+        {
+          "id": 70,
+          "at": "2026-10-28T02:55:37.605+00:00",
+          "kind": "created",
+          "message": "Run created",
+          "detail": {
+            "provider": "fixture",
+            "policy": "restart"
+          }
+        },
+        {
+          "id": 71,
+          "at": "2026-10-28T02:55:37.607+00:00",
+          "kind": "started",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 72,
+          "at": "2026-10-28T02:55:37.665+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 73,
+          "at": "2026-10-28T02:55:37.667+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 74,
+          "at": "2026-10-28T02:55:37.668+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 75,
+          "at": "2026-10-28T02:55:37.670+00:00",
+          "kind": "fault_injected",
+          "message": "Worker exits immediately after the durable patch checkpoint",
+          "detail": {
+            "exit_code": 86,
+            "synthetic_trigger": true,
+            "real_process_exit": true
+          }
+        },
+        {
+          "id": 76,
+          "at": "2026-10-28T02:55:37.672+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 86,
+            "active_ms": 62
+          }
+        },
+        {
+          "id": 77,
+          "at": "2026-10-28T02:55:37.717+00:00",
+          "kind": "resumed",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 78,
+          "at": "2026-10-28T02:55:37.774+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 79,
+          "at": "2026-10-28T02:55:37.777+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 80,
+          "at": "2026-10-28T02:55:37.778+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 81,
+          "at": "2026-10-28T02:55:37.781+00:00",
+          "kind": "testing",
+          "message": "Running independent acceptance tests",
+          "detail": {
+            "mode": "fixture"
+          }
+        },
+        {
+          "id": 82,
+          "at": "2026-10-28T02:55:37.824+00:00",
+          "kind": "tests_passed",
+          "message": "Independent tests passed",
+          "detail": {
+            "passed": true,
+            "mode": "fixture",
+            "error": null
+          }
+        },
+        {
+          "id": 83,
+          "at": "2026-10-28T02:55:37.835+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 0,
+            "active_ms": 114
+          }
+        }
+      ],
+      "release_checks": {
+        "acceptance_passed": true,
+        "fault_profile_verified": true,
+        "provider_evidence_valid": true
+      }
+    },
+    {
+      "id": "c6c6850b472e4039",
+      "task_id": "page-slices",
+      "provider": "fixture",
+      "model": "trusted-fixture-v1",
+      "policy": "restart",
+      "fault": "model_429_once",
+      "status": "passed",
+      "phase": "done",
+      "created_at": "2026-10-28T02:55:37.887+00:00",
+      "updated_at": "2026-10-28T02:55:38.230+00:00",
+      "checkpoint": {
+        "source": "def page_slices(total_items, page_size):\n    if total_items < 0 or page_size <= 0:\n        raise ValueError(\"invalid pagination bounds\")\n    return [(start, min(start + page_size, total_items))\n            for start in range(0, total_items, page_size)]\n",
+        "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,3 +1,5 @@\n def page_slices(total_items, page_size):\n-    return [(start, start + page_size)\n-            for start in range(0, total_items + 1, page_size)]\n+    if total_items < 0 or page_size <= 0:\n+        raise ValueError(\"invalid pagination bounds\")\n+    return [(start, min(start + page_size, total_items))\n+            for start in range(0, total_items, page_size)]\n",
+        "round": 1,
+        "source_sha256": "b08224bf5de7a7516c44e82f94b76228308a9ad928503103384c7892d2d57a87",
+        "response_model": "trusted-fixture-v1",
+        "tests": {
+          "passed": true,
+          "returncode": 0,
+          "stdout": "test_exact_coverage (test_acceptance.PaginationAcceptance.test_exact_coverage) ... ok\ntest_invalid_bounds (test_acceptance.PaginationAcceptance.test_invalid_bounds) ... ok\ntest_partial_and_large_page (test_acceptance.PaginationAcceptance.test_partial_and_large_page) ... ok\ntest_zero_and_exact_multiple (test_acceptance.PaginationAcceptance.test_zero_and_exact_multiple) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "duration_ms": 53,
+          "mode": "fixture"
+        }
+      },
+      "fault_triggered": true,
+      "request_pending": false,
+      "metrics": {
+        "model_calls": 0,
+        "fixture_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "elapsed_ms": 338,
+        "restarts": 0,
+        "retries": 1,
+        "unknown_usage_requests": 0
+      },
+      "eligibility": {
+        "live_nvidia_model": false,
+        "mode_label": "Offline fixture — no model API calls"
+      },
+      "notes": [
+        "Results apply only to this task and fault profile; not a production reliability guarantee."
+      ],
+      "versions": {
+        "crashlab": "0.1.0",
+        "runtime_sha256": "a6e379310882c197c00fb29c38ce6ed50e510c1fc98c5a3db2a9c9fc2796d124",
+        "task_sha256": "3a876aabe6a1d1216acf693289b3bc89e4f76b6ae6b7809c4bb2a5525bf30949"
+      },
+      "events": [
+        {
+          "id": 84,
+          "at": "2026-10-28T02:55:37.887+00:00",
+          "kind": "created",
+          "message": "Run created",
+          "detail": {
+            "provider": "fixture",
+            "policy": "restart"
+          }
+        },
+        {
+          "id": 85,
+          "at": "2026-10-28T02:55:37.889+00:00",
+          "kind": "started",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 86,
+          "at": "2026-10-28T02:55:37.947+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 87,
+          "at": "2026-10-28T02:55:37.948+00:00",
+          "kind": "fault_injected",
+          "message": "Synthetic HTTP 429 injected before provider call",
+          "detail": {
+            "synthetic": true,
+            "actual_api_request": false
+          }
+        },
+        {
+          "id": 88,
+          "at": "2026-10-28T02:55:37.950+00:00",
+          "kind": "retry",
+          "message": "Bounded retry after injected 429",
+          "detail": {}
+        },
+        {
+          "id": 89,
+          "at": "2026-10-28T02:55:38.157+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 90,
+          "at": "2026-10-28T02:55:38.159+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 91,
+          "at": "2026-10-28T02:55:38.163+00:00",
+          "kind": "testing",
+          "message": "Running independent acceptance tests",
+          "detail": {
+            "mode": "fixture"
+          }
+        },
+        {
+          "id": 92,
+          "at": "2026-10-28T02:55:38.219+00:00",
+          "kind": "tests_passed",
+          "message": "Independent tests passed",
+          "detail": {
+            "passed": true,
+            "mode": "fixture",
+            "error": null
+          }
+        },
+        {
+          "id": 93,
+          "at": "2026-10-28T02:55:38.230+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 0,
+            "active_ms": 338
+          }
+        }
+      ],
+      "release_checks": {
+        "acceptance_passed": true,
+        "fault_profile_verified": true,
+        "provider_evidence_valid": true
+      }
+    },
+    {
+      "id": "8f8e4bb9daa44a00",
+      "task_id": "page-slices",
+      "provider": "fixture",
+      "model": "trusted-fixture-v1",
+      "policy": "resume",
+      "fault": "none",
+      "status": "passed",
+      "phase": "done",
+      "created_at": "2026-10-28T02:55:38.272+00:00",
+      "updated_at": "2026-10-28T02:55:38.387+00:00",
+      "checkpoint": {
+        "source": "def page_slices(total_items, page_size):\n    if total_items < 0 or page_size <= 0:\n        raise ValueError(\"invalid pagination bounds\")\n    return [(start, min(start + page_size, total_items))\n            for start in range(0, total_items, page_size)]\n",
+        "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,3 +1,5 @@\n def page_slices(total_items, page_size):\n-    return [(start, start + page_size)\n-            for start in range(0, total_items + 1, page_size)]\n+    if total_items < 0 or page_size <= 0:\n+        raise ValueError(\"invalid pagination bounds\")\n+    return [(start, min(start + page_size, total_items))\n+            for start in range(0, total_items, page_size)]\n",
+        "round": 1,
+        "source_sha256": "b08224bf5de7a7516c44e82f94b76228308a9ad928503103384c7892d2d57a87",
+        "response_model": "trusted-fixture-v1",
+        "tests": {
+          "passed": true,
+          "returncode": 0,
+          "stdout": "test_exact_coverage (test_acceptance.PaginationAcceptance.test_exact_coverage) ... ok\ntest_invalid_bounds (test_acceptance.PaginationAcceptance.test_invalid_bounds) ... ok\ntest_partial_and_large_page (test_acceptance.PaginationAcceptance.test_partial_and_large_page) ... ok\ntest_zero_and_exact_multiple (test_acceptance.PaginationAcceptance.test_zero_and_exact_multiple) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "duration_ms": 37,
+          "mode": "fixture"
+        }
+      },
+      "fault_triggered": false,
+      "request_pending": false,
+      "metrics": {
+        "model_calls": 0,
+        "fixture_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "elapsed_ms": 109,
+        "restarts": 0,
+        "retries": 0,
+        "unknown_usage_requests": 0
+      },
+      "eligibility": {
+        "live_nvidia_model": false,
+        "mode_label": "Offline fixture — no model API calls"
+      },
+      "notes": [
+        "Results apply only to this task and fault profile; not a production reliability guarantee."
+      ],
+      "versions": {
+        "crashlab": "0.1.0",
+        "runtime_sha256": "a6e379310882c197c00fb29c38ce6ed50e510c1fc98c5a3db2a9c9fc2796d124",
+        "task_sha256": "3a876aabe6a1d1216acf693289b3bc89e4f76b6ae6b7809c4bb2a5525bf30949"
+      },
+      "events": [
+        {
+          "id": 94,
+          "at": "2026-10-28T02:55:38.272+00:00",
+          "kind": "created",
+          "message": "Run created",
+          "detail": {
+            "provider": "fixture",
+            "policy": "resume"
+          }
+        },
+        {
+          "id": 95,
+          "at": "2026-10-28T02:55:38.274+00:00",
+          "kind": "started",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 96,
+          "at": "2026-10-28T02:55:38.334+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 97,
+          "at": "2026-10-28T02:55:38.336+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 98,
+          "at": "2026-10-28T02:55:38.337+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 99,
+          "at": "2026-10-28T02:55:38.339+00:00",
+          "kind": "testing",
+          "message": "Running independent acceptance tests",
+          "detail": {
+            "mode": "fixture"
+          }
+        },
+        {
+          "id": 100,
+          "at": "2026-10-28T02:55:38.378+00:00",
+          "kind": "tests_passed",
+          "message": "Independent tests passed",
+          "detail": {
+            "passed": true,
+            "mode": "fixture",
+            "error": null
+          }
+        },
+        {
+          "id": 101,
+          "at": "2026-10-28T02:55:38.387+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 0,
+            "active_ms": 109
+          }
+        }
+      ],
+      "release_checks": {
+        "acceptance_passed": true,
+        "fault_profile_verified": true,
+        "provider_evidence_valid": true
+      }
+    },
+    {
+      "id": "f5fa986ef65a44f2",
+      "task_id": "page-slices",
+      "provider": "fixture",
+      "model": "trusted-fixture-v1",
+      "policy": "resume",
+      "fault": "worker_crash_after_patch",
+      "status": "passed",
+      "phase": "done",
+      "created_at": "2026-10-28T02:55:38.389+00:00",
+      "updated_at": "2026-10-28T02:55:38.613+00:00",
+      "checkpoint": {
+        "source": "def page_slices(total_items, page_size):\n    if total_items < 0 or page_size <= 0:\n        raise ValueError(\"invalid pagination bounds\")\n    return [(start, min(start + page_size, total_items))\n            for start in range(0, total_items, page_size)]\n",
+        "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,3 +1,5 @@\n def page_slices(total_items, page_size):\n-    return [(start, start + page_size)\n-            for start in range(0, total_items + 1, page_size)]\n+    if total_items < 0 or page_size <= 0:\n+        raise ValueError(\"invalid pagination bounds\")\n+    return [(start, min(start + page_size, total_items))\n+            for start in range(0, total_items, page_size)]\n",
+        "round": 1,
+        "source_sha256": "b08224bf5de7a7516c44e82f94b76228308a9ad928503103384c7892d2d57a87",
+        "response_model": "trusted-fixture-v1",
+        "tests": {
+          "passed": true,
+          "returncode": 0,
+          "stdout": "test_exact_coverage (test_acceptance.PaginationAcceptance.test_exact_coverage) ... ok\ntest_invalid_bounds (test_acceptance.PaginationAcceptance.test_invalid_bounds) ... ok\ntest_partial_and_large_page (test_acceptance.PaginationAcceptance.test_partial_and_large_page) ... ok\ntest_zero_and_exact_multiple (test_acceptance.PaginationAcceptance.test_zero_and_exact_multiple) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "duration_ms": 40,
+          "mode": "fixture"
+        }
+      },
+      "fault_triggered": true,
+      "request_pending": false,
+      "metrics": {
+        "model_calls": 0,
+        "fixture_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "elapsed_ms": 166,
+        "restarts": 1,
+        "retries": 0,
+        "unknown_usage_requests": 0
+      },
+      "eligibility": {
+        "live_nvidia_model": false,
+        "mode_label": "Offline fixture — no model API calls"
+      },
+      "notes": [
+        "Results apply only to this task and fault profile; not a production reliability guarantee."
+      ],
+      "versions": {
+        "crashlab": "0.1.0",
+        "runtime_sha256": "a6e379310882c197c00fb29c38ce6ed50e510c1fc98c5a3db2a9c9fc2796d124",
+        "task_sha256": "3a876aabe6a1d1216acf693289b3bc89e4f76b6ae6b7809c4bb2a5525bf30949"
+      },
+      "events": [
+        {
+          "id": 102,
+          "at": "2026-10-28T02:55:38.389+00:00",
+          "kind": "created",
+          "message": "Run created",
+          "detail": {
+            "provider": "fixture",
+            "policy": "resume"
+          }
+        },
+        {
+          "id": 103,
+          "at": "2026-10-28T02:55:38.391+00:00",
+          "kind": "started",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 104,
+          "at": "2026-10-28T02:55:38.447+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 105,
+          "at": "2026-10-28T02:55:38.448+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 106,
+          "at": "2026-10-28T02:55:38.450+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 107,
+          "at": "2026-10-28T02:55:38.451+00:00",
+          "kind": "fault_injected",
+          "message": "Worker exits immediately after the durable patch checkpoint",
+          "detail": {
+            "exit_code": 86,
+            "synthetic_trigger": true,
+            "real_process_exit": true
+          }
+        },
+        {
+          "id": 108,
+          "at": "2026-10-28T02:55:38.453+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 86,
+            "active_ms": 60
+          }
+        },
+        {
+          "id": 109,
+          "at": "2026-10-28T02:55:38.504+00:00",
+          "kind": "resumed",
+          "message": "Run resumed from checkpoint",
+          "detail": {}
+        },
+        {
+          "id": 110,
+          "at": "2026-10-28T02:55:38.562+00:00",
+          "kind": "testing",
+          "message": "Running independent acceptance tests",
+          "detail": {
+            "mode": "fixture"
+          }
+        },
+        {
+          "id": 111,
+          "at": "2026-10-28T02:55:38.604+00:00",
+          "kind": "tests_passed",
+          "message": "Independent tests passed",
+          "detail": {
+            "passed": true,
+            "mode": "fixture",
+            "error": null
+          }
+        },
+        {
+          "id": 112,
+          "at": "2026-10-28T02:55:38.613+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 0,
+            "active_ms": 106
+          }
+        }
+      ],
+      "release_checks": {
+        "acceptance_passed": true,
+        "fault_profile_verified": true,
+        "provider_evidence_valid": true
+      }
+    },
+    {
+      "id": "b13c646f40454f87",
+      "task_id": "page-slices",
+      "provider": "fixture",
+      "model": "trusted-fixture-v1",
+      "policy": "resume",
+      "fault": "model_429_once",
+      "status": "passed",
+      "phase": "done",
+      "created_at": "2026-10-28T02:55:38.618+00:00",
+      "updated_at": "2026-10-28T02:55:38.965+00:00",
+      "checkpoint": {
+        "source": "def page_slices(total_items, page_size):\n    if total_items < 0 or page_size <= 0:\n        raise ValueError(\"invalid pagination bounds\")\n    return [(start, min(start + page_size, total_items))\n            for start in range(0, total_items, page_size)]\n",
+        "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,3 +1,5 @@\n def page_slices(total_items, page_size):\n-    return [(start, start + page_size)\n-            for start in range(0, total_items + 1, page_size)]\n+    if total_items < 0 or page_size <= 0:\n+        raise ValueError(\"invalid pagination bounds\")\n+    return [(start, min(start + page_size, total_items))\n+            for start in range(0, total_items, page_size)]\n",
+        "round": 1,
+        "source_sha256": "b08224bf5de7a7516c44e82f94b76228308a9ad928503103384c7892d2d57a87",
+        "response_model": "trusted-fixture-v1",
+        "tests": {
+          "passed": true,
+          "returncode": 0,
+          "stdout": "test_exact_coverage (test_acceptance.PaginationAcceptance.test_exact_coverage) ... ok\ntest_invalid_bounds (test_acceptance.PaginationAcceptance.test_invalid_bounds) ... ok\ntest_partial_and_large_page (test_acceptance.PaginationAcceptance.test_partial_and_large_page) ... ok\ntest_zero_and_exact_multiple (test_acceptance.PaginationAcceptance.test_zero_and_exact_multiple) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "duration_ms": 57,
+          "mode": "fixture"
+        }
+      },
+      "fault_triggered": true,
+      "request_pending": false,
+      "metrics": {
+        "model_calls": 0,
+        "fixture_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "elapsed_ms": 342,
+        "restarts": 0,
+        "retries": 1,
+        "unknown_usage_requests": 0
+      },
+      "eligibility": {
+        "live_nvidia_model": false,
+        "mode_label": "Offline fixture — no model API calls"
+      },
+      "notes": [
+        "Results apply only to this task and fault profile; not a production reliability guarantee."
+      ],
+      "versions": {
+        "crashlab": "0.1.0",
+        "runtime_sha256": "a6e379310882c197c00fb29c38ce6ed50e510c1fc98c5a3db2a9c9fc2796d124",
+        "task_sha256": "3a876aabe6a1d1216acf693289b3bc89e4f76b6ae6b7809c4bb2a5525bf30949"
+      },
+      "events": [
+        {
+          "id": 113,
+          "at": "2026-10-28T02:55:38.618+00:00",
+          "kind": "created",
+          "message": "Run created",
+          "detail": {
+            "provider": "fixture",
+            "policy": "resume"
+          }
+        },
+        {
+          "id": 114,
+          "at": "2026-10-28T02:55:38.620+00:00",
+          "kind": "started",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 115,
+          "at": "2026-10-28T02:55:38.678+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 116,
+          "at": "2026-10-28T02:55:38.680+00:00",
+          "kind": "fault_injected",
+          "message": "Synthetic HTTP 429 injected before provider call",
+          "detail": {
+            "synthetic": true,
+            "actual_api_request": false
+          }
+        },
+        {
+          "id": 117,
+          "at": "2026-10-28T02:55:38.681+00:00",
+          "kind": "retry",
+          "message": "Bounded retry after injected 429",
+          "detail": {}
+        },
+        {
+          "id": 118,
+          "at": "2026-10-28T02:55:38.888+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 119,
+          "at": "2026-10-28T02:55:38.890+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 120,
+          "at": "2026-10-28T02:55:38.894+00:00",
+          "kind": "testing",
+          "message": "Running independent acceptance tests",
+          "detail": {
+            "mode": "fixture"
+          }
+        },
+        {
+          "id": 121,
+          "at": "2026-10-28T02:55:38.953+00:00",
+          "kind": "tests_passed",
+          "message": "Independent tests passed",
+          "detail": {
+            "passed": true,
+            "mode": "fixture",
+            "error": null
+          }
+        },
+        {
+          "id": 122,
+          "at": "2026-10-28T02:55:38.965+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 0,
+            "active_ms": 342
+          }
+        }
+      ],
+      "release_checks": {
+        "acceptance_passed": true,
+        "fault_profile_verified": true,
+        "provider_evidence_valid": true
+      }
+    },
+    {
+      "id": "0a8205799e3148b9",
+      "task_id": "token-budget",
+      "provider": "fixture",
+      "model": "trusted-fixture-v1",
+      "policy": "restart",
+      "fault": "none",
+      "status": "passed",
+      "phase": "done",
+      "created_at": "2026-10-28T02:55:39.004+00:00",
+      "updated_at": "2026-10-28T02:55:39.127+00:00",
+      "checkpoint": {
+        "source": "def fits_budget(used_tokens, requested_tokens, max_tokens):\n    values = (used_tokens, requested_tokens, max_tokens)\n    if any(type(value) is not int for value in values):\n        raise TypeError(\"token counts must be integers\")\n    if any(value < 0 for value in values):\n        raise ValueError(\"token counts must be non-negative\")\n    return used_tokens + requested_tokens <= max_tokens\n",
+        "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,2 +1,7 @@\n def fits_budget(used_tokens, requested_tokens, max_tokens):\n-    return used_tokens + requested_tokens < max_tokens\n+    values = (used_tokens, requested_tokens, max_tokens)\n+    if any(type(value) is not int for value in values):\n+        raise TypeError(\"token counts must be integers\")\n+    if any(value < 0 for value in values):\n+        raise ValueError(\"token counts must be non-negative\")\n+    return used_tokens + requested_tokens <= max_tokens\n",
+        "round": 1,
+        "source_sha256": "f1b53c7fb28990979eed1e8618b1790eacc4455b39a21584297397d39d33110d",
+        "response_model": "trusted-fixture-v1",
+        "tests": {
+          "passed": true,
+          "returncode": 0,
+          "stdout": "test_budget_boundaries (test_acceptance.TokenBudgetAcceptance.test_budget_boundaries) ... ok\ntest_invalid_types (test_acceptance.TokenBudgetAcceptance.test_invalid_types) ... ok\ntest_large_integer_precision (test_acceptance.TokenBudgetAcceptance.test_large_integer_precision) ... ok\ntest_negative_values (test_acceptance.TokenBudgetAcceptance.test_negative_values) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "duration_ms": 43,
+          "mode": "fixture"
+        }
+      },
+      "fault_triggered": false,
+      "request_pending": false,
+      "metrics": {
+        "model_calls": 0,
+        "fixture_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "elapsed_ms": 118,
+        "restarts": 0,
+        "retries": 0,
+        "unknown_usage_requests": 0
+      },
+      "eligibility": {
+        "live_nvidia_model": false,
+        "mode_label": "Offline fixture — no model API calls"
+      },
+      "notes": [
+        "Results apply only to this task and fault profile; not a production reliability guarantee."
+      ],
+      "versions": {
+        "crashlab": "0.1.0",
+        "runtime_sha256": "a6e379310882c197c00fb29c38ce6ed50e510c1fc98c5a3db2a9c9fc2796d124",
+        "task_sha256": "8a0d3b1d6984383d730cf6bfb0782f9770dbb29658eda48e7ff5fd57bad41f78"
+      },
+      "events": [
+        {
+          "id": 123,
+          "at": "2026-10-28T02:55:39.004+00:00",
+          "kind": "created",
+          "message": "Run created",
+          "detail": {
+            "provider": "fixture",
+            "policy": "restart"
+          }
+        },
+        {
+          "id": 124,
+          "at": "2026-10-28T02:55:39.006+00:00",
+          "kind": "started",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 125,
+          "at": "2026-10-28T02:55:39.068+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 126,
+          "at": "2026-10-28T02:55:39.069+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 127,
+          "at": "2026-10-28T02:55:39.071+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 128,
+          "at": "2026-10-28T02:55:39.074+00:00",
+          "kind": "testing",
+          "message": "Running independent acceptance tests",
+          "detail": {
+            "mode": "fixture"
+          }
+        },
+        {
+          "id": 129,
+          "at": "2026-10-28T02:55:39.118+00:00",
+          "kind": "tests_passed",
+          "message": "Independent tests passed",
+          "detail": {
+            "passed": true,
+            "mode": "fixture",
+            "error": null
+          }
+        },
+        {
+          "id": 130,
+          "at": "2026-10-28T02:55:39.128+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 0,
+            "active_ms": 118
+          }
+        }
+      ],
+      "release_checks": {
+        "acceptance_passed": true,
+        "fault_profile_verified": true,
+        "provider_evidence_valid": true
+      }
+    },
+    {
+      "id": "a58f76512a594559",
+      "task_id": "token-budget",
+      "provider": "fixture",
+      "model": "trusted-fixture-v1",
+      "policy": "restart",
+      "fault": "worker_crash_after_patch",
+      "status": "passed",
+      "phase": "done",
+      "created_at": "2026-10-28T02:55:39.174+00:00",
+      "updated_at": "2026-10-28T02:55:39.423+00:00",
+      "checkpoint": {
+        "source": "def fits_budget(used_tokens, requested_tokens, max_tokens):\n    values = (used_tokens, requested_tokens, max_tokens)\n    if any(type(value) is not int for value in values):\n        raise TypeError(\"token counts must be integers\")\n    if any(value < 0 for value in values):\n        raise ValueError(\"token counts must be non-negative\")\n    return used_tokens + requested_tokens <= max_tokens\n",
+        "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,2 +1,7 @@\n def fits_budget(used_tokens, requested_tokens, max_tokens):\n-    return used_tokens + requested_tokens < max_tokens\n+    values = (used_tokens, requested_tokens, max_tokens)\n+    if any(type(value) is not int for value in values):\n+        raise TypeError(\"token counts must be integers\")\n+    if any(value < 0 for value in values):\n+        raise ValueError(\"token counts must be non-negative\")\n+    return used_tokens + requested_tokens <= max_tokens\n",
+        "round": 1,
+        "source_sha256": "f1b53c7fb28990979eed1e8618b1790eacc4455b39a21584297397d39d33110d",
+        "response_model": "trusted-fixture-v1",
+        "tests": {
+          "passed": true,
+          "returncode": 0,
+          "stdout": "test_budget_boundaries (test_acceptance.TokenBudgetAcceptance.test_budget_boundaries) ... ok\ntest_invalid_types (test_acceptance.TokenBudgetAcceptance.test_invalid_types) ... ok\ntest_large_integer_precision (test_acceptance.TokenBudgetAcceptance.test_large_integer_precision) ... ok\ntest_negative_values (test_acceptance.TokenBudgetAcceptance.test_negative_values) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "duration_ms": 56,
+          "mode": "fixture"
+        }
+      },
+      "fault_triggered": true,
+      "request_pending": false,
+      "metrics": {
+        "model_calls": 0,
+        "fixture_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "elapsed_ms": 190,
+        "restarts": 1,
+        "retries": 0,
+        "unknown_usage_requests": 0
+      },
+      "eligibility": {
+        "live_nvidia_model": false,
+        "mode_label": "Offline fixture — no model API calls"
+      },
+      "notes": [
+        "Results apply only to this task and fault profile; not a production reliability guarantee."
+      ],
+      "versions": {
+        "crashlab": "0.1.0",
+        "runtime_sha256": "a6e379310882c197c00fb29c38ce6ed50e510c1fc98c5a3db2a9c9fc2796d124",
+        "task_sha256": "8a0d3b1d6984383d730cf6bfb0782f9770dbb29658eda48e7ff5fd57bad41f78"
+      },
+      "events": [
+        {
+          "id": 131,
+          "at": "2026-10-28T02:55:39.174+00:00",
+          "kind": "created",
+          "message": "Run created",
+          "detail": {
+            "provider": "fixture",
+            "policy": "restart"
+          }
+        },
+        {
+          "id": 132,
+          "at": "2026-10-28T02:55:39.176+00:00",
+          "kind": "started",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 133,
+          "at": "2026-10-28T02:55:39.231+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 134,
+          "at": "2026-10-28T02:55:39.233+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 135,
+          "at": "2026-10-28T02:55:39.234+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 136,
+          "at": "2026-10-28T02:55:39.236+00:00",
+          "kind": "fault_injected",
+          "message": "Worker exits immediately after the durable patch checkpoint",
+          "detail": {
+            "exit_code": 86,
+            "synthetic_trigger": true,
+            "real_process_exit": true
+          }
+        },
+        {
+          "id": 137,
+          "at": "2026-10-28T02:55:39.239+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 86,
+            "active_ms": 60
+          }
+        },
+        {
+          "id": 138,
+          "at": "2026-10-28T02:55:39.289+00:00",
+          "kind": "resumed",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 139,
+          "at": "2026-10-28T02:55:39.348+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 140,
+          "at": "2026-10-28T02:55:39.350+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 141,
+          "at": "2026-10-28T02:55:39.351+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 142,
+          "at": "2026-10-28T02:55:39.353+00:00",
+          "kind": "testing",
+          "message": "Running independent acceptance tests",
+          "detail": {
+            "mode": "fixture"
+          }
+        },
+        {
+          "id": 143,
+          "at": "2026-10-28T02:55:39.412+00:00",
+          "kind": "tests_passed",
+          "message": "Independent tests passed",
+          "detail": {
+            "passed": true,
+            "mode": "fixture",
+            "error": null
+          }
+        },
+        {
+          "id": 144,
+          "at": "2026-10-28T02:55:39.423+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 0,
+            "active_ms": 130
+          }
+        }
+      ],
+      "release_checks": {
+        "acceptance_passed": true,
+        "fault_profile_verified": true,
+        "provider_evidence_valid": true
+      }
+    },
+    {
+      "id": "57a79c4f52044728",
+      "task_id": "token-budget",
+      "provider": "fixture",
+      "model": "trusted-fixture-v1",
+      "policy": "restart",
+      "fault": "model_429_once",
+      "status": "passed",
+      "phase": "done",
+      "created_at": "2026-10-28T02:55:39.456+00:00",
+      "updated_at": "2026-10-28T02:55:39.801+00:00",
+      "checkpoint": {
+        "source": "def fits_budget(used_tokens, requested_tokens, max_tokens):\n    values = (used_tokens, requested_tokens, max_tokens)\n    if any(type(value) is not int for value in values):\n        raise TypeError(\"token counts must be integers\")\n    if any(value < 0 for value in values):\n        raise ValueError(\"token counts must be non-negative\")\n    return used_tokens + requested_tokens <= max_tokens\n",
+        "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,2 +1,7 @@\n def fits_budget(used_tokens, requested_tokens, max_tokens):\n-    return used_tokens + requested_tokens < max_tokens\n+    values = (used_tokens, requested_tokens, max_tokens)\n+    if any(type(value) is not int for value in values):\n+        raise TypeError(\"token counts must be integers\")\n+    if any(value < 0 for value in values):\n+        raise ValueError(\"token counts must be non-negative\")\n+    return used_tokens + requested_tokens <= max_tokens\n",
+        "round": 1,
+        "source_sha256": "f1b53c7fb28990979eed1e8618b1790eacc4455b39a21584297397d39d33110d",
+        "response_model": "trusted-fixture-v1",
+        "tests": {
+          "passed": true,
+          "returncode": 0,
+          "stdout": "test_budget_boundaries (test_acceptance.TokenBudgetAcceptance.test_budget_boundaries) ... ok\ntest_invalid_types (test_acceptance.TokenBudgetAcceptance.test_invalid_types) ... ok\ntest_large_integer_precision (test_acceptance.TokenBudgetAcceptance.test_large_integer_precision) ... ok\ntest_negative_values (test_acceptance.TokenBudgetAcceptance.test_negative_values) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "duration_ms": 52,
+          "mode": "fixture"
+        }
+      },
+      "fault_triggered": true,
+      "request_pending": false,
+      "metrics": {
+        "model_calls": 0,
+        "fixture_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "elapsed_ms": 339,
+        "restarts": 0,
+        "retries": 1,
+        "unknown_usage_requests": 0
+      },
+      "eligibility": {
+        "live_nvidia_model": false,
+        "mode_label": "Offline fixture — no model API calls"
+      },
+      "notes": [
+        "Results apply only to this task and fault profile; not a production reliability guarantee."
+      ],
+      "versions": {
+        "crashlab": "0.1.0",
+        "runtime_sha256": "a6e379310882c197c00fb29c38ce6ed50e510c1fc98c5a3db2a9c9fc2796d124",
+        "task_sha256": "8a0d3b1d6984383d730cf6bfb0782f9770dbb29658eda48e7ff5fd57bad41f78"
+      },
+      "events": [
+        {
+          "id": 145,
+          "at": "2026-10-28T02:55:39.457+00:00",
+          "kind": "created",
+          "message": "Run created",
+          "detail": {
+            "provider": "fixture",
+            "policy": "restart"
+          }
+        },
+        {
+          "id": 146,
+          "at": "2026-10-28T02:55:39.459+00:00",
+          "kind": "started",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 147,
+          "at": "2026-10-28T02:55:39.518+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 148,
+          "at": "2026-10-28T02:55:39.519+00:00",
+          "kind": "fault_injected",
+          "message": "Synthetic HTTP 429 injected before provider call",
+          "detail": {
+            "synthetic": true,
+            "actual_api_request": false
+          }
+        },
+        {
+          "id": 149,
+          "at": "2026-10-28T02:55:39.521+00:00",
+          "kind": "retry",
+          "message": "Bounded retry after injected 429",
+          "detail": {}
+        },
+        {
+          "id": 150,
+          "at": "2026-10-28T02:55:39.728+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 151,
+          "at": "2026-10-28T02:55:39.732+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 152,
+          "at": "2026-10-28T02:55:39.737+00:00",
+          "kind": "testing",
+          "message": "Running independent acceptance tests",
+          "detail": {
+            "mode": "fixture"
+          }
+        },
+        {
+          "id": 153,
+          "at": "2026-10-28T02:55:39.791+00:00",
+          "kind": "tests_passed",
+          "message": "Independent tests passed",
+          "detail": {
+            "passed": true,
+            "mode": "fixture",
+            "error": null
+          }
+        },
+        {
+          "id": 154,
+          "at": "2026-10-28T02:55:39.801+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 0,
+            "active_ms": 339
+          }
+        }
+      ],
+      "release_checks": {
+        "acceptance_passed": true,
+        "fault_profile_verified": true,
+        "provider_evidence_valid": true
+      }
+    },
+    {
+      "id": "62fe3c7bf1204802",
+      "task_id": "token-budget",
+      "provider": "fixture",
+      "model": "trusted-fixture-v1",
+      "policy": "resume",
+      "fault": "none",
+      "status": "passed",
+      "phase": "done",
+      "created_at": "2026-10-28T02:55:39.838+00:00",
+      "updated_at": "2026-10-28T02:55:39.946+00:00",
+      "checkpoint": {
+        "source": "def fits_budget(used_tokens, requested_tokens, max_tokens):\n    values = (used_tokens, requested_tokens, max_tokens)\n    if any(type(value) is not int for value in values):\n        raise TypeError(\"token counts must be integers\")\n    if any(value < 0 for value in values):\n        raise ValueError(\"token counts must be non-negative\")\n    return used_tokens + requested_tokens <= max_tokens\n",
+        "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,2 +1,7 @@\n def fits_budget(used_tokens, requested_tokens, max_tokens):\n-    return used_tokens + requested_tokens < max_tokens\n+    values = (used_tokens, requested_tokens, max_tokens)\n+    if any(type(value) is not int for value in values):\n+        raise TypeError(\"token counts must be integers\")\n+    if any(value < 0 for value in values):\n+        raise ValueError(\"token counts must be non-negative\")\n+    return used_tokens + requested_tokens <= max_tokens\n",
+        "round": 1,
+        "source_sha256": "f1b53c7fb28990979eed1e8618b1790eacc4455b39a21584297397d39d33110d",
+        "response_model": "trusted-fixture-v1",
+        "tests": {
+          "passed": true,
+          "returncode": 0,
+          "stdout": "test_budget_boundaries (test_acceptance.TokenBudgetAcceptance.test_budget_boundaries) ... ok\ntest_invalid_types (test_acceptance.TokenBudgetAcceptance.test_invalid_types) ... ok\ntest_large_integer_precision (test_acceptance.TokenBudgetAcceptance.test_large_integer_precision) ... ok\ntest_negative_values (test_acceptance.TokenBudgetAcceptance.test_negative_values) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "duration_ms": 36,
+          "mode": "fixture"
+        }
+      },
+      "fault_triggered": false,
+      "request_pending": false,
+      "metrics": {
+        "model_calls": 0,
+        "fixture_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "elapsed_ms": 103,
+        "restarts": 0,
+        "retries": 0,
+        "unknown_usage_requests": 0
+      },
+      "eligibility": {
+        "live_nvidia_model": false,
+        "mode_label": "Offline fixture — no model API calls"
+      },
+      "notes": [
+        "Results apply only to this task and fault profile; not a production reliability guarantee."
+      ],
+      "versions": {
+        "crashlab": "0.1.0",
+        "runtime_sha256": "a6e379310882c197c00fb29c38ce6ed50e510c1fc98c5a3db2a9c9fc2796d124",
+        "task_sha256": "8a0d3b1d6984383d730cf6bfb0782f9770dbb29658eda48e7ff5fd57bad41f78"
+      },
+      "events": [
+        {
+          "id": 155,
+          "at": "2026-10-28T02:55:39.839+00:00",
+          "kind": "created",
+          "message": "Run created",
+          "detail": {
+            "provider": "fixture",
+            "policy": "resume"
+          }
+        },
+        {
+          "id": 156,
+          "at": "2026-10-28T02:55:39.841+00:00",
+          "kind": "started",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 157,
+          "at": "2026-10-28T02:55:39.896+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 158,
+          "at": "2026-10-28T02:55:39.897+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 159,
+          "at": "2026-10-28T02:55:39.899+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 160,
+          "at": "2026-10-28T02:55:39.901+00:00",
+          "kind": "testing",
+          "message": "Running independent acceptance tests",
+          "detail": {
+            "mode": "fixture"
+          }
+        },
+        {
+          "id": 161,
+          "at": "2026-10-28T02:55:39.938+00:00",
+          "kind": "tests_passed",
+          "message": "Independent tests passed",
+          "detail": {
+            "passed": true,
+            "mode": "fixture",
+            "error": null
+          }
+        },
+        {
+          "id": 162,
+          "at": "2026-10-28T02:55:39.947+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 0,
+            "active_ms": 103
+          }
+        }
+      ],
+      "release_checks": {
+        "acceptance_passed": true,
+        "fault_profile_verified": true,
+        "provider_evidence_valid": true
+      }
+    },
+    {
+      "id": "62598c9cea264a54",
+      "task_id": "token-budget",
+      "provider": "fixture",
+      "model": "trusted-fixture-v1",
+      "policy": "resume",
+      "fault": "worker_crash_after_patch",
+      "status": "passed",
+      "phase": "done",
+      "created_at": "2026-10-28T02:55:39.949+00:00",
+      "updated_at": "2026-10-28T02:55:40.168+00:00",
+      "checkpoint": {
+        "source": "def fits_budget(used_tokens, requested_tokens, max_tokens):\n    values = (used_tokens, requested_tokens, max_tokens)\n    if any(type(value) is not int for value in values):\n        raise TypeError(\"token counts must be integers\")\n    if any(value < 0 for value in values):\n        raise ValueError(\"token counts must be non-negative\")\n    return used_tokens + requested_tokens <= max_tokens\n",
+        "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,2 +1,7 @@\n def fits_budget(used_tokens, requested_tokens, max_tokens):\n-    return used_tokens + requested_tokens < max_tokens\n+    values = (used_tokens, requested_tokens, max_tokens)\n+    if any(type(value) is not int for value in values):\n+        raise TypeError(\"token counts must be integers\")\n+    if any(value < 0 for value in values):\n+        raise ValueError(\"token counts must be non-negative\")\n+    return used_tokens + requested_tokens <= max_tokens\n",
+        "round": 1,
+        "source_sha256": "f1b53c7fb28990979eed1e8618b1790eacc4455b39a21584297397d39d33110d",
+        "response_model": "trusted-fixture-v1",
+        "tests": {
+          "passed": true,
+          "returncode": 0,
+          "stdout": "test_budget_boundaries (test_acceptance.TokenBudgetAcceptance.test_budget_boundaries) ... ok\ntest_invalid_types (test_acceptance.TokenBudgetAcceptance.test_invalid_types) ... ok\ntest_large_integer_precision (test_acceptance.TokenBudgetAcceptance.test_large_integer_precision) ... ok\ntest_negative_values (test_acceptance.TokenBudgetAcceptance.test_negative_values) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "duration_ms": 41,
+          "mode": "fixture"
+        }
+      },
+      "fault_triggered": true,
+      "request_pending": false,
+      "metrics": {
+        "model_calls": 0,
+        "fixture_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "elapsed_ms": 168,
+        "restarts": 1,
+        "retries": 0,
+        "unknown_usage_requests": 0
+      },
+      "eligibility": {
+        "live_nvidia_model": false,
+        "mode_label": "Offline fixture — no model API calls"
+      },
+      "notes": [
+        "Results apply only to this task and fault profile; not a production reliability guarantee."
+      ],
+      "versions": {
+        "crashlab": "0.1.0",
+        "runtime_sha256": "a6e379310882c197c00fb29c38ce6ed50e510c1fc98c5a3db2a9c9fc2796d124",
+        "task_sha256": "8a0d3b1d6984383d730cf6bfb0782f9770dbb29658eda48e7ff5fd57bad41f78"
+      },
+      "events": [
+        {
+          "id": 163,
+          "at": "2026-10-28T02:55:39.949+00:00",
+          "kind": "created",
+          "message": "Run created",
+          "detail": {
+            "provider": "fixture",
+            "policy": "resume"
+          }
+        },
+        {
+          "id": 164,
+          "at": "2026-10-28T02:55:39.950+00:00",
+          "kind": "started",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 165,
+          "at": "2026-10-28T02:55:40.004+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 166,
+          "at": "2026-10-28T02:55:40.005+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 167,
+          "at": "2026-10-28T02:55:40.007+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 168,
+          "at": "2026-10-28T02:55:40.009+00:00",
+          "kind": "fault_injected",
+          "message": "Worker exits immediately after the durable patch checkpoint",
+          "detail": {
+            "exit_code": 86,
+            "synthetic_trigger": true,
+            "real_process_exit": true
+          }
+        },
+        {
+          "id": 169,
+          "at": "2026-10-28T02:55:40.011+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 86,
+            "active_ms": 58
+          }
+        },
+        {
+          "id": 170,
+          "at": "2026-10-28T02:55:40.056+00:00",
+          "kind": "resumed",
+          "message": "Run resumed from checkpoint",
+          "detail": {}
+        },
+        {
+          "id": 171,
+          "at": "2026-10-28T02:55:40.116+00:00",
+          "kind": "testing",
+          "message": "Running independent acceptance tests",
+          "detail": {
+            "mode": "fixture"
+          }
+        },
+        {
+          "id": 172,
+          "at": "2026-10-28T02:55:40.158+00:00",
+          "kind": "tests_passed",
+          "message": "Independent tests passed",
+          "detail": {
+            "passed": true,
+            "mode": "fixture",
+            "error": null
+          }
+        },
+        {
+          "id": 173,
+          "at": "2026-10-28T02:55:40.169+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 0,
+            "active_ms": 110
+          }
+        }
+      ],
+      "release_checks": {
+        "acceptance_passed": true,
+        "fault_profile_verified": true,
+        "provider_evidence_valid": true
+      }
+    },
+    {
+      "id": "27882c767bdc4a79",
+      "task_id": "token-budget",
+      "provider": "fixture",
+      "model": "trusted-fixture-v1",
+      "policy": "resume",
+      "fault": "model_429_once",
+      "status": "passed",
+      "phase": "done",
+      "created_at": "2026-10-28T02:55:40.171+00:00",
+      "updated_at": "2026-10-28T02:55:40.513+00:00",
+      "checkpoint": {
+        "source": "def fits_budget(used_tokens, requested_tokens, max_tokens):\n    values = (used_tokens, requested_tokens, max_tokens)\n    if any(type(value) is not int for value in values):\n        raise TypeError(\"token counts must be integers\")\n    if any(value < 0 for value in values):\n        raise ValueError(\"token counts must be non-negative\")\n    return used_tokens + requested_tokens <= max_tokens\n",
+        "diff": "--- before/solution.py\n+++ after/solution.py\n@@ -1,2 +1,7 @@\n def fits_budget(used_tokens, requested_tokens, max_tokens):\n-    return used_tokens + requested_tokens < max_tokens\n+    values = (used_tokens, requested_tokens, max_tokens)\n+    if any(type(value) is not int for value in values):\n+        raise TypeError(\"token counts must be integers\")\n+    if any(value < 0 for value in values):\n+        raise ValueError(\"token counts must be non-negative\")\n+    return used_tokens + requested_tokens <= max_tokens\n",
+        "round": 1,
+        "source_sha256": "f1b53c7fb28990979eed1e8618b1790eacc4455b39a21584297397d39d33110d",
+        "response_model": "trusted-fixture-v1",
+        "tests": {
+          "passed": true,
+          "returncode": 0,
+          "stdout": "test_budget_boundaries (test_acceptance.TokenBudgetAcceptance.test_budget_boundaries) ... ok\ntest_invalid_types (test_acceptance.TokenBudgetAcceptance.test_invalid_types) ... ok\ntest_large_integer_precision (test_acceptance.TokenBudgetAcceptance.test_large_integer_precision) ... ok\ntest_negative_values (test_acceptance.TokenBudgetAcceptance.test_negative_values) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+          "duration_ms": 51,
+          "mode": "fixture"
+        }
+      },
+      "fault_triggered": true,
+      "request_pending": false,
+      "metrics": {
+        "model_calls": 0,
+        "fixture_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "elapsed_ms": 337,
+        "restarts": 0,
+        "retries": 1,
+        "unknown_usage_requests": 0
+      },
+      "eligibility": {
+        "live_nvidia_model": false,
+        "mode_label": "Offline fixture — no model API calls"
+      },
+      "notes": [
+        "Results apply only to this task and fault profile; not a production reliability guarantee."
+      ],
+      "versions": {
+        "crashlab": "0.1.0",
+        "runtime_sha256": "a6e379310882c197c00fb29c38ce6ed50e510c1fc98c5a3db2a9c9fc2796d124",
+        "task_sha256": "8a0d3b1d6984383d730cf6bfb0782f9770dbb29658eda48e7ff5fd57bad41f78"
+      },
+      "events": [
+        {
+          "id": 174,
+          "at": "2026-10-28T02:55:40.171+00:00",
+          "kind": "created",
+          "message": "Run created",
+          "detail": {
+            "provider": "fixture",
+            "policy": "resume"
+          }
+        },
+        {
+          "id": 175,
+          "at": "2026-10-28T02:55:40.173+00:00",
+          "kind": "started",
+          "message": "Run started from the beginning",
+          "detail": {}
+        },
+        {
+          "id": 176,
+          "at": "2026-10-28T02:55:40.235+00:00",
+          "kind": "prepared",
+          "message": "Task workspace prepared",
+          "detail": {}
+        },
+        {
+          "id": 177,
+          "at": "2026-10-28T02:55:40.236+00:00",
+          "kind": "fault_injected",
+          "message": "Synthetic HTTP 429 injected before provider call",
+          "detail": {
+            "synthetic": true,
+            "actual_api_request": false
+          }
+        },
+        {
+          "id": 178,
+          "at": "2026-10-28T02:55:40.237+00:00",
+          "kind": "retry",
+          "message": "Bounded retry after injected 429",
+          "detail": {}
+        },
+        {
+          "id": 179,
+          "at": "2026-10-28T02:55:40.442+00:00",
+          "kind": "fixture_response",
+          "message": "Loading trusted offline fixture (no API request)",
+          "detail": {
+            "attempt": 1,
+            "model": "trusted-fixture-v1"
+          }
+        },
+        {
+          "id": 180,
+          "at": "2026-10-28T02:55:40.445+00:00",
+          "kind": "patch_checkpoint",
+          "message": "Patch and reported token usage committed atomically",
+          "detail": {
+            "round": 1,
+            "live": false
+          }
+        },
+        {
+          "id": 181,
+          "at": "2026-10-28T02:55:40.449+00:00",
+          "kind": "testing",
+          "message": "Running independent acceptance tests",
+          "detail": {
+            "mode": "fixture"
+          }
+        },
+        {
+          "id": 182,
+          "at": "2026-10-28T02:55:40.503+00:00",
+          "kind": "tests_passed",
+          "message": "Independent tests passed",
+          "detail": {
+            "passed": true,
+            "mode": "fixture",
+            "error": null
+          }
+        },
+        {
+          "id": 183,
+          "at": "2026-10-28T02:55:40.513+00:00",
+          "kind": "worker_exited",
+          "message": "Worker process exited",
+          "detail": {
+            "returncode": 0,
+            "active_ms": 337
+          }
+        }
+      ],
+      "release_checks": {
+        "acceptance_passed": true,
+        "fault_profile_verified": true,
+        "provider_evidence_valid": true
+      }
+    }
+  ],
+  "notes": [
+    "Offline fixture results are not NVIDIA model evaluation or hackathon eligibility evidence.",
+    "Small smoke matrix; no statistical performance or production reliability claims."
+  ]
+}

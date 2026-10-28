@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Inspect recorded Nebius Nemotron code repair and worker-crash recovery experiments, with patches, independent Docker tests, and token accounting.">
+  <meta name="theme-color" content="#101a27">
+  <title>Agent CrashLab — Recorded live evidence</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Agent CrashLab home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Agent CrashLab</a>
+    <span class="header-label"><span class="status-dot"></span> RECORDED LIVE EVIDENCE</span>
+  </header>
+  <main id="top">
+    <section class="intro" aria-labelledby="page-title">
+      <div><p class="eyebrow">CODING AGENT RELIABILITY</p><h1 id="page-title">Stop the worker.<br><em>Keep the work.</em></h1></div>
+      <div class="intro-copy"><p>A real NVIDIA model repaired the code. We interrupted its worker, then checked what survived.</p><p>Inspect the recorded patch, execution trail, independent tests, and known token usage.</p></div>
+    </section>
+
+    <aside class="recording-notice" aria-label="What this hosted page does"><span class="notice-symbol" aria-hidden="true">↳</span><p><strong>This is an interactive replay of completed live experiments.</strong> It makes no model API calls and does not host a Python worker. Use the source project to run new experiments.</p></aside>
+    <div id="load-error" class="error-banner" role="alert" hidden></div>
+
+    <section class="evidence-header" aria-label="Recorded experiment selection">
+      <div><p class="eyebrow">THE EVIDENCE</p><p class="model-line">MODEL <span id="model-name">Loading recorded model…</span></p></div>
+      <label class="attempt-label">Attempt<select id="attempt-select" disabled><option value="final">Final verification</option><option value="initial">Initial attempt · strict gate failed</option></select></label>
+      <span id="gate-badge" class="badge">LOADING</span>
+    </section>
+    <p id="attempt-note" class="attempt-note">Loading the saved verification reports.</p>
+
+    <section id="case-cards" class="case-grid" aria-label="Compare the two recorded experiments"></section>
+
+    <section class="recovery-proof" aria-labelledby="proof-heading">
+      <div><p class="eyebrow">CHECKPOINT BOUNDARY</p><h2 id="proof-heading">What changed during recovery?</h2><p id="proof-caption">Comparing the saved run immediately before and after its one resume.</p></div>
+      <div class="proof-metrics"><div><span class="small-label">ADDED MODEL CALLS</span><strong id="added-calls">—</strong></div><div><span class="small-label">ADDED KNOWN TOKENS</span><strong id="added-tokens">—</strong></div><div><span class="small-label">SAME CANDIDATE HASH</span><strong id="same-hash">—</strong></div></div>
+    </section>
+
+    <section class="workspace" aria-label="Selected experiment details">
+      <div class="panel trail-panel">
+        <div class="panel-heading"><div><p class="eyebrow">RECORDED EXECUTION TRAIL</p><h2 id="selected-title">Loading experiment</h2></div><span id="selected-id" class="mono muted"></span></div>
+        <div class="replay-controls">
+          <div class="control-buttons"><button id="previous-step" aria-label="Previous recorded event" disabled>←</button><button id="play-replay" class="play-button" disabled>Play replay <span aria-hidden="true">▶</span></button><button id="next-step" aria-label="Next recorded event" disabled>→</button><span id="step-count" class="mono muted">—</span></div>
+          <label for="event-scrubber" class="sr-only">Recorded event position</label><input id="event-scrubber" type="range" min="0" max="0" value="0" disabled>
+          <p class="replay-note">Fixed-interval playback of saved events; not wall-clock execution or a new run.</p>
+        </div>
+        <div id="current-event" class="current-event" aria-live="polite"><span class="small-label">SELECTED EVENT</span><strong id="event-message">Loading…</strong><span id="event-time" class="mono muted"></span></div>
+        <ol id="event-list" class="event-list"></ol>
+        <details class="event-detail"><summary>Inspect selected event data</summary><pre id="event-json"></pre></details>
+      </div>
+
+      <div class="artifact-column">
+        <section class="panel" aria-labelledby="patch-title"><div class="panel-heading"><div><p class="eyebrow">FINAL DELIVERED ARTIFACT</p><h2 id="patch-title">Patch evidence</h2></div><div class="tabs" role="tablist" aria-label="Code view"><button id="diff-tab" role="tab" aria-selected="true">Diff</button><button id="source-tab" role="tab" aria-selected="false">Source</button></div></div><pre id="code-content" class="code-content" role="tabpanel" aria-labelledby="diff-tab"></pre><p class="panel-footnote">The final artifact remains visible throughout replay; earlier candidate source may not be retained in a saved report.</p></section>
+        <section class="panel" aria-labelledby="tests-title"><div class="panel-heading"><div><p class="eyebrow">INDEPENDENT ACCEPTANCE</p><h2 id="tests-title">Docker test result</h2></div><span id="test-badge" class="badge">—</span></div><div class="test-meta"><span id="test-mode">—</span><span id="test-duration">—</span></div><pre id="test-output" class="test-output"></pre><p class="panel-footnote">Tests are maintained outside the agent’s editable source. This is the final recorded verdict, not a browser-executed test.</p></section>
+      </div>
+    </section>
+
+    <section class="audit-section" aria-labelledby="audit-title">
+      <div><p class="eyebrow">KEEP THE FAILED CHECK</p><h2 id="audit-title">The first attempt is part of the record.</h2><p>The model initially used <code>list.append()</code>, outside this benchmark’s execution contract. Validation rejected the candidate, and the agent repaired it. Both tasks eventually passed, but recovery needed another model request, so the strict recovery gate failed.</p><p>We clarified the generic execution constraint and reran the same two cases. The guard and acceptance tests were not weakened; no reference answer was supplied.</p></div>
+      <div class="audit-ledger"><span class="small-label">BOTH ATTEMPTS COMBINED</span><strong id="all-requests">—</strong><span>actual inference requests</span><div class="ledger-line"><span>Reported input tokens</span><b id="all-input">—</b></div><div class="ledger-line"><span>Reported output tokens</span><b id="all-output">—</b></div><div class="ledger-line"><span>Unknown-usage requests</span><b id="all-unknown">—</b></div><p>Small smoke experiments; no general reliability, cost-saving, or statistical latency claim.</p></div>
+    </section>
+
+    <section class="handoff-section" aria-labelledby="handoff-title">
+      <div><p class="eyebrow">INSPECT. DOWNLOAD. REPRODUCE.</p><h2 id="handoff-title">Run the full application locally.</h2><p>The source project makes real Nebius requests, starts owned worker processes, persists checkpoints, and tests generated code in Docker. It requires Python 3.11+, Docker, and your own Token Factory key for a new live experiment.</p><div class="link-row"><a id="repository-link" class="button primary disabled" aria-disabled="true">Public source link pending</a><a id="source-archive-link" class="button" hidden download>Download source build ↓</a><a class="text-link" href="data/live-check.json" download>Final report ↓</a><a class="text-link" href="data/live-check-initial.json" download>Initial report ↓</a><a class="text-link" href="data/offline-check.json" download>Offline smoke matrix ↓</a></div></div>
+      <div class="reproduce-box"><div><span class="small-label">FROM THE SOURCE PROJECT DIRECTORY</span><button id="copy-command" class="copy-button">Copy</button></div><pre id="reproduce-command">python3 -m unittest discover -s tests -v
+python3 -m crashlab serve
+
+# After local key/model setup and Docker preparation:
+python3 -m scripts.verify_live --task page-slices \
+  --data .crashlab-live --output examples/live-check.json</pre><p>New live verification is metered by Nebius. The default local fixture preview makes no model requests. No key is needed to inspect this page or download the saved evidence.</p></div>
+    </section>
+    <footer><span>Agent CrashLab <span class="muted">/ recorded live evidence</span></span><span id="evidence-date">Evidence date loading</span></footer>
+  </main>
+</body>
+</html>

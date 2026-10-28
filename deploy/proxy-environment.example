@@ -1,0 +1,5 @@
+# Server-side file: /etc/agent-crashlab/proxy.env (root:root, mode 0600).
+CRASHLAB_DEMO_HOST=YOUR_DEMO_HOST
+# Generate interactively with `caddy hash-password`; store only its bcrypt hash.
+# Give the corresponding password to judges through private testing instructions.
+CRASHLAB_JUDGE_PASSWORD_HASH=
